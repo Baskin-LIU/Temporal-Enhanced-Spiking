@@ -1,0 +1,607 @@
+{
+  "best_by_parameter": {
+    "bump_amount": {
+      "candidate": "bump_amount_0p075",
+      "mean_best_validation_accuracy": 0.9226666666666666,
+      "parameters": {
+        "bump_amount": 0.075,
+        "margin_ms": 2.0,
+        "omega_lr_scale": 0.01,
+        "omega_max": 0.35,
+        "omega_min": 0.1,
+        "readout_mean": 1.5
+      },
+      "sample_standard_deviation": 0.031785741037976954
+    },
+    "margin_ms": {
+      "candidate": "margin_3p0",
+      "mean_best_validation_accuracy": 0.9286666666666666,
+      "parameters": {
+        "bump_amount": 0.05,
+        "margin_ms": 3.0,
+        "omega_lr_scale": 0.01,
+        "omega_max": 0.35,
+        "omega_min": 0.1,
+        "readout_mean": 1.5
+      },
+      "sample_standard_deviation": 0.023437861108329218
+    },
+    "omega_lr_scale": {
+      "candidate": "omega_lr_0p02",
+      "mean_best_validation_accuracy": 0.9303333333333333,
+      "parameters": {
+        "bump_amount": 0.05,
+        "margin_ms": 2.0,
+        "omega_lr_scale": 0.02,
+        "omega_max": 0.35,
+        "omega_min": 0.1,
+        "readout_mean": 1.5
+      },
+      "sample_standard_deviation": 0.03225419869309005
+    },
+    "omega_range": {
+      "candidate": "omega_range_0p12_0p32",
+      "mean_best_validation_accuracy": 0.9236666666666666,
+      "parameters": {
+        "bump_amount": 0.05,
+        "margin_ms": 2.0,
+        "omega_lr_scale": 0.01,
+        "omega_max": 0.32,
+        "omega_min": 0.12,
+        "readout_mean": 1.5
+      },
+      "sample_standard_deviation": 0.03689625093872455
+    },
+    "readout_mean": {
+      "candidate": "readout_mean_1p75",
+      "mean_best_validation_accuracy": 0.9236666666666666,
+      "parameters": {
+        "bump_amount": 0.05,
+        "margin_ms": 2.0,
+        "omega_lr_scale": 0.01,
+        "omega_max": 0.35,
+        "omega_min": 0.1,
+        "readout_mean": 1.75
+      },
+      "sample_standard_deviation": 0.023115651263447706
+    }
+  },
+  "candidates": {
+    "baseline": {
+      "family": "baseline",
+      "mean_best_validation_accuracy": 0.9213333333333334,
+      "parameters": {
+        "bump_amount": 0.05,
+        "margin_ms": 2.0,
+        "omega_lr_scale": 0.01,
+        "omega_max": 0.35,
+        "omega_min": 0.1,
+        "readout_mean": 1.5
+      },
+      "runs": [
+        {
+          "best_epoch": 20,
+          "best_validation_accuracy": 0.883,
+          "best_validation_loss": 0.6950743247890017,
+          "candidate": "baseline",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/baseline/seed1/metrics.json",
+          "replicate": 1,
+          "reused": false,
+          "runtime_seconds": 611.0778598338366
+        },
+        {
+          "best_epoch": 20,
+          "best_validation_accuracy": 0.933,
+          "best_validation_loss": 0.47597765425029265,
+          "candidate": "baseline",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_learn_omega_h5_e40_seed2_2026-10-07/metrics.json",
+          "replicate": 2,
+          "reused": true,
+          "runtime_seconds": 966.7179626249708
+        },
+        {
+          "best_epoch": 20,
+          "best_validation_accuracy": 0.948,
+          "best_validation_loss": 0.3194087833989233,
+          "candidate": "baseline",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/baseline/seed3/metrics.json",
+          "replicate": 3,
+          "reused": false,
+          "runtime_seconds": 610.7922196248546
+        }
+      ],
+      "sample_standard_deviation": 0.034034296427770214,
+      "screen_peak": 0.933,
+      "status": "complete"
+    },
+    "bump_amount_0p025": {
+      "family": "bump_amount",
+      "mean_best_validation_accuracy": 0.9203333333333333,
+      "parameters": {
+        "bump_amount": 0.025,
+        "margin_ms": 2.0,
+        "omega_lr_scale": 0.01,
+        "omega_max": 0.35,
+        "omega_min": 0.1,
+        "readout_mean": 1.5
+      },
+      "runs": [
+        {
+          "best_epoch": 20,
+          "best_validation_accuracy": 0.907,
+          "best_validation_loss": 0.5961441392771835,
+          "candidate": "bump_amount_0p025",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/bump_amount_0p025/seed1/metrics.json",
+          "replicate": 1,
+          "reused": false,
+          "runtime_seconds": 600.2385320826434
+        },
+        {
+          "best_epoch": 20,
+          "best_validation_accuracy": 0.936,
+          "best_validation_loss": 0.4492812610926621,
+          "candidate": "bump_amount_0p025",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/bump_amount_0p025/seed2/metrics.json",
+          "replicate": 2,
+          "reused": false,
+          "runtime_seconds": 559.4857014589943
+        },
+        {
+          "best_epoch": 11,
+          "best_validation_accuracy": 0.918,
+          "best_validation_loss": 0.5272019815912916,
+          "candidate": "bump_amount_0p025",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/bump_amount_0p025/seed3/metrics.json",
+          "replicate": 3,
+          "reused": false,
+          "runtime_seconds": 621.1521687079221
+        }
+      ],
+      "sample_standard_deviation": 0.014640127503998512,
+      "screen_peak": 0.936,
+      "status": "complete"
+    },
+    "bump_amount_0p075": {
+      "family": "bump_amount",
+      "mean_best_validation_accuracy": 0.9226666666666666,
+      "parameters": {
+        "bump_amount": 0.075,
+        "margin_ms": 2.0,
+        "omega_lr_scale": 0.01,
+        "omega_max": 0.35,
+        "omega_min": 0.1,
+        "readout_mean": 1.5
+      },
+      "runs": [
+        {
+          "best_epoch": 17,
+          "best_validation_accuracy": 0.887,
+          "best_validation_loss": 0.760631715850168,
+          "candidate": "bump_amount_0p075",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/bump_amount_0p075/seed1/metrics.json",
+          "replicate": 1,
+          "reused": false,
+          "runtime_seconds": 591.4005795000121
+        },
+        {
+          "best_epoch": 19,
+          "best_validation_accuracy": 0.933,
+          "best_validation_loss": 0.49240355874937225,
+          "candidate": "bump_amount_0p075",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/bump_amount_0p075/seed2/metrics.json",
+          "replicate": 2,
+          "reused": false,
+          "runtime_seconds": 564.472204042133
+        },
+        {
+          "best_epoch": 18,
+          "best_validation_accuracy": 0.948,
+          "best_validation_loss": 0.357971196496135,
+          "candidate": "bump_amount_0p075",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/bump_amount_0p075/seed3/metrics.json",
+          "replicate": 3,
+          "reused": false,
+          "runtime_seconds": 589.1905134581029
+        }
+      ],
+      "sample_standard_deviation": 0.031785741037976954,
+      "screen_peak": 0.933,
+      "status": "complete"
+    },
+    "margin_1p0": {
+      "family": "margin_ms",
+      "mean_best_validation_accuracy": 0.9086666666666666,
+      "parameters": {
+        "bump_amount": 0.05,
+        "margin_ms": 1.0,
+        "omega_lr_scale": 0.01,
+        "omega_max": 0.35,
+        "omega_min": 0.1,
+        "readout_mean": 1.5
+      },
+      "runs": [
+        {
+          "best_epoch": 19,
+          "best_validation_accuracy": 0.856,
+          "best_validation_loss": 0.246850363403866,
+          "candidate": "margin_1p0",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/margin_1p0/seed1/metrics.json",
+          "replicate": 1,
+          "reused": false,
+          "runtime_seconds": 665.7878431254067
+        },
+        {
+          "best_epoch": 19,
+          "best_validation_accuracy": 0.942,
+          "best_validation_loss": 0.10602801401541102,
+          "candidate": "margin_1p0",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/margin_1p0/seed2/metrics.json",
+          "replicate": 2,
+          "reused": false,
+          "runtime_seconds": 596.9019025410526
+        },
+        {
+          "best_epoch": 20,
+          "best_validation_accuracy": 0.928,
+          "best_validation_loss": 0.10249504962731448,
+          "candidate": "margin_1p0",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/margin_1p0/seed3/metrics.json",
+          "replicate": 3,
+          "reused": false,
+          "runtime_seconds": 672.5943998326547
+        }
+      ],
+      "sample_standard_deviation": 0.04614469994845923,
+      "screen_peak": 0.942,
+      "status": "complete"
+    },
+    "margin_3p0": {
+      "family": "margin_ms",
+      "mean_best_validation_accuracy": 0.9286666666666666,
+      "parameters": {
+        "bump_amount": 0.05,
+        "margin_ms": 3.0,
+        "omega_lr_scale": 0.01,
+        "omega_max": 0.35,
+        "omega_min": 0.1,
+        "readout_mean": 1.5
+      },
+      "runs": [
+        {
+          "best_epoch": 18,
+          "best_validation_accuracy": 0.902,
+          "best_validation_loss": 1.3910459842633989,
+          "candidate": "margin_3p0",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/margin_3p0/seed1/metrics.json",
+          "replicate": 1,
+          "reused": false,
+          "runtime_seconds": 620.8115082499571
+        },
+        {
+          "best_epoch": 19,
+          "best_validation_accuracy": 0.938,
+          "best_validation_loss": 1.1021418608794906,
+          "candidate": "margin_3p0",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/margin_3p0/seed2/metrics.json",
+          "replicate": 2,
+          "reused": false,
+          "runtime_seconds": 588.3223592080176
+        },
+        {
+          "best_epoch": 16,
+          "best_validation_accuracy": 0.946,
+          "best_validation_loss": 1.3175880045659982,
+          "candidate": "margin_3p0",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/margin_3p0/seed3/metrics.json",
+          "replicate": 3,
+          "reused": false,
+          "runtime_seconds": 622.9073777082376
+        }
+      ],
+      "sample_standard_deviation": 0.023437861108329218,
+      "screen_peak": 0.938,
+      "status": "complete"
+    },
+    "omega_lr_0p005": {
+      "family": "omega_lr_scale",
+      "mean_best_validation_accuracy": 0.9010000000000001,
+      "parameters": {
+        "bump_amount": 0.05,
+        "margin_ms": 2.0,
+        "omega_lr_scale": 0.005,
+        "omega_max": 0.35,
+        "omega_min": 0.1,
+        "readout_mean": 1.5
+      },
+      "runs": [
+        {
+          "best_epoch": 19,
+          "best_validation_accuracy": 0.856,
+          "best_validation_loss": 1.0033942897391035,
+          "candidate": "omega_lr_0p005",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/omega_lr_0p005/seed1/metrics.json",
+          "replicate": 1,
+          "reused": false,
+          "runtime_seconds": 610.6196897909977
+        },
+        {
+          "best_epoch": 20,
+          "best_validation_accuracy": 0.919,
+          "best_validation_loss": 0.5278272305324672,
+          "candidate": "omega_lr_0p005",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/omega_lr_0p005/seed2/metrics.json",
+          "replicate": 2,
+          "reused": false,
+          "runtime_seconds": 614.2622217908502
+        },
+        {
+          "best_epoch": 20,
+          "best_validation_accuracy": 0.928,
+          "best_validation_loss": 0.4525190026940909,
+          "candidate": "omega_lr_0p005",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/omega_lr_0p005/seed3/metrics.json",
+          "replicate": 3,
+          "reused": false,
+          "runtime_seconds": 607.9608650831506
+        }
+      ],
+      "sample_standard_deviation": 0.0392300904918661,
+      "screen_peak": 0.919,
+      "status": "complete"
+    },
+    "omega_lr_0p02": {
+      "family": "omega_lr_scale",
+      "mean_best_validation_accuracy": 0.9303333333333333,
+      "parameters": {
+        "bump_amount": 0.05,
+        "margin_ms": 2.0,
+        "omega_lr_scale": 0.02,
+        "omega_max": 0.35,
+        "omega_min": 0.1,
+        "readout_mean": 1.5
+      },
+      "runs": [
+        {
+          "best_epoch": 16,
+          "best_validation_accuracy": 0.896,
+          "best_validation_loss": 0.7544097201016282,
+          "candidate": "omega_lr_0p02",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/omega_lr_0p02/seed1/metrics.json",
+          "replicate": 1,
+          "reused": false,
+          "runtime_seconds": 630.0815433333628
+        },
+        {
+          "best_epoch": 20,
+          "best_validation_accuracy": 0.935,
+          "best_validation_loss": 0.44813941368120536,
+          "candidate": "omega_lr_0p02",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/omega_lr_0p02/seed2/metrics.json",
+          "replicate": 2,
+          "reused": false,
+          "runtime_seconds": 590.7267589578405
+        },
+        {
+          "best_epoch": 20,
+          "best_validation_accuracy": 0.96,
+          "best_validation_loss": 0.3610590559187764,
+          "candidate": "omega_lr_0p02",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/omega_lr_0p02/seed3/metrics.json",
+          "replicate": 3,
+          "reused": false,
+          "runtime_seconds": 633.2110849577002
+        }
+      ],
+      "sample_standard_deviation": 0.03225419869309005,
+      "screen_peak": 0.935,
+      "status": "complete"
+    },
+    "omega_range_0p08_0p40": {
+      "family": "omega_range",
+      "mean_best_validation_accuracy": 0.918,
+      "parameters": {
+        "bump_amount": 0.05,
+        "margin_ms": 2.0,
+        "omega_lr_scale": 0.01,
+        "omega_max": 0.4,
+        "omega_min": 0.08,
+        "readout_mean": 1.5
+      },
+      "runs": [
+        {
+          "best_epoch": 20,
+          "best_validation_accuracy": 0.883,
+          "best_validation_loss": 0.6950743247890017,
+          "candidate": "omega_range_0p08_0p40",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/omega_range_0p08_0p40/seed1/metrics.json",
+          "replicate": 1,
+          "reused": false,
+          "runtime_seconds": 630.2174836662598
+        },
+        {
+          "best_epoch": 20,
+          "best_validation_accuracy": 0.933,
+          "best_validation_loss": 0.47597765425029265,
+          "candidate": "omega_range_0p08_0p40",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/omega_range_0p08_0p40/seed2/metrics.json",
+          "replicate": 2,
+          "reused": false,
+          "runtime_seconds": 619.9728064998053
+        },
+        {
+          "best_epoch": 19,
+          "best_validation_accuracy": 0.938,
+          "best_validation_loss": 0.3702930203928763,
+          "candidate": "omega_range_0p08_0p40",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/omega_range_0p08_0p40/seed3/metrics.json",
+          "replicate": 3,
+          "reused": false,
+          "runtime_seconds": 636.0890162922442
+        }
+      ],
+      "sample_standard_deviation": 0.03041381265149109,
+      "screen_peak": 0.933,
+      "status": "complete"
+    },
+    "omega_range_0p12_0p32": {
+      "family": "omega_range",
+      "mean_best_validation_accuracy": 0.9236666666666666,
+      "parameters": {
+        "bump_amount": 0.05,
+        "margin_ms": 2.0,
+        "omega_lr_scale": 0.01,
+        "omega_max": 0.32,
+        "omega_min": 0.12,
+        "readout_mean": 1.5
+      },
+      "runs": [
+        {
+          "best_epoch": 20,
+          "best_validation_accuracy": 0.883,
+          "best_validation_loss": 0.6950743247890017,
+          "candidate": "omega_range_0p12_0p32",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/omega_range_0p12_0p32/seed1/metrics.json",
+          "replicate": 1,
+          "reused": false,
+          "runtime_seconds": 654.2347395420074
+        },
+        {
+          "best_epoch": 20,
+          "best_validation_accuracy": 0.933,
+          "best_validation_loss": 0.47597765425029265,
+          "candidate": "omega_range_0p12_0p32",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/omega_range_0p12_0p32/seed2/metrics.json",
+          "replicate": 2,
+          "reused": false,
+          "runtime_seconds": 580.6570851248689
+        },
+        {
+          "best_epoch": 20,
+          "best_validation_accuracy": 0.955,
+          "best_validation_loss": 0.3123943526872417,
+          "candidate": "omega_range_0p12_0p32",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/omega_range_0p12_0p32/seed3/metrics.json",
+          "replicate": 3,
+          "reused": false,
+          "runtime_seconds": 657.5924272499979
+        }
+      ],
+      "sample_standard_deviation": 0.03689625093872455,
+      "screen_peak": 0.933,
+      "status": "complete"
+    },
+    "readout_mean_1p25": {
+      "family": "readout_mean",
+      "mean_best_validation_accuracy": 0.9126666666666666,
+      "parameters": {
+        "bump_amount": 0.05,
+        "margin_ms": 2.0,
+        "omega_lr_scale": 0.01,
+        "omega_max": 0.35,
+        "omega_min": 0.1,
+        "readout_mean": 1.25
+      },
+      "runs": [
+        {
+          "best_epoch": 20,
+          "best_validation_accuracy": 0.88,
+          "best_validation_loss": 0.7316038844124798,
+          "candidate": "readout_mean_1p25",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/readout_mean_1p25/seed1/metrics.json",
+          "replicate": 1,
+          "reused": false,
+          "runtime_seconds": 622.6327137919143
+        },
+        {
+          "best_epoch": 19,
+          "best_validation_accuracy": 0.908,
+          "best_validation_loss": 0.716433458692733,
+          "candidate": "readout_mean_1p25",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/readout_mean_1p25/seed2/metrics.json",
+          "replicate": 2,
+          "reused": false,
+          "runtime_seconds": 632.2767174588516
+        },
+        {
+          "best_epoch": 20,
+          "best_validation_accuracy": 0.95,
+          "best_validation_loss": 0.3200481894371182,
+          "candidate": "readout_mean_1p25",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/readout_mean_1p25/seed3/metrics.json",
+          "replicate": 3,
+          "reused": false,
+          "runtime_seconds": 624.2609873753972
+        }
+      ],
+      "sample_standard_deviation": 0.03523256069793013,
+      "screen_peak": 0.908,
+      "status": "complete"
+    },
+    "readout_mean_1p75": {
+      "family": "readout_mean",
+      "mean_best_validation_accuracy": 0.9236666666666666,
+      "parameters": {
+        "bump_amount": 0.05,
+        "margin_ms": 2.0,
+        "omega_lr_scale": 0.01,
+        "omega_max": 0.35,
+        "omega_min": 0.1,
+        "readout_mean": 1.75
+      },
+      "runs": [
+        {
+          "best_epoch": 20,
+          "best_validation_accuracy": 0.902,
+          "best_validation_loss": 0.6369949541738206,
+          "candidate": "readout_mean_1p75",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/readout_mean_1p75/seed1/metrics.json",
+          "replicate": 1,
+          "reused": false,
+          "runtime_seconds": 598.8075364576653
+        },
+        {
+          "best_epoch": 20,
+          "best_validation_accuracy": 0.921,
+          "best_validation_loss": 0.526817771658859,
+          "candidate": "readout_mean_1p75",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/readout_mean_1p75/seed2/metrics.json",
+          "replicate": 2,
+          "reused": false,
+          "runtime_seconds": 621.2221067920327
+        },
+        {
+          "best_epoch": 20,
+          "best_validation_accuracy": 0.948,
+          "best_validation_loss": 0.33044936735446756,
+          "candidate": "readout_mean_1p75",
+          "metrics_path": "/Users/bingkung/Projects/TeS/results/yinyang_h5_e20_tuning_2026-10-08/runs/readout_mean_1p75/seed3/metrics.json",
+          "replicate": 3,
+          "reused": false,
+          "runtime_seconds": 615.2984994160943
+        }
+      ],
+      "sample_standard_deviation": 0.023115651263447706,
+      "screen_peak": 0.921,
+      "status": "complete"
+    }
+  },
+  "fixed": {
+    "cosine_t_max": 40,
+    "data_split_seeds": [
+      1001,
+      1002,
+      1003
+    ],
+    "epochs": 20,
+    "hidden_neurons": 5,
+    "test_evaluations": 0,
+    "weight_learning_rate": 0.01
+  },
+  "replicate_seed_offsets": {
+    "seed1": 0,
+    "seed2": 1,
+    "seed3": 2
+  },
+  "screening_rule": "run seed 2 first; do not run seeds 1 and 3 when seed-2 maximum validation accuracy is below 0.90",
+  "selection_metric": "mean across three seeds of each run's maximum validation accuracy within epochs 1-20"
+}

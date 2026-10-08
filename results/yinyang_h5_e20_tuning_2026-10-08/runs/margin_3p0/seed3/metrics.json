@@ -1,0 +1,4273 @@
+{
+  "artifacts": {
+    "best_validation_checkpoint": "checkpoints/best_validation.pt",
+    "training_figure": "figures/training.png"
+  },
+  "baseline_train": {
+    "accuracy": 0.3392,
+    "all_silent": 0,
+    "ambiguous_ties": 0,
+    "confusion_matrix": [
+      [
+        30,
+        58,
+        1579
+      ],
+      [
+        458,
+        0,
+        1209
+      ],
+      [
+        0,
+        0,
+        1666
+      ]
+    ],
+    "correct": 1696,
+    "hidden_full_horizon_silence_counts": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hidden_silence_counts": [
+      0,
+      0,
+      0,
+      0,
+      6
+    ],
+    "hidden_spikes_per_sample": 5.0,
+    "mean_loss": 11.587380713678357,
+    "minimum_causal_slope": null,
+    "minimum_recorded_slope": 0.0039122667246415,
+    "output_silence_counts": [
+      0,
+      0,
+      0
+    ],
+    "output_spikes_per_sample": 3.0,
+    "per_class_accuracy": [
+      0.017996400719856028,
+      0.0,
+      1.0
+    ],
+    "runtime_seconds": 18.347372542135417,
+    "samples": 5000,
+    "split": "train",
+    "target_silent": 0,
+    "threshold_sensitivity_cap_activations": 0
+  },
+  "baseline_validation": {
+    "accuracy": 0.337,
+    "all_silent": 0,
+    "ambiguous_ties": 0,
+    "confusion_matrix": [
+      [
+        3,
+        18,
+        312
+      ],
+      [
+        84,
+        0,
+        249
+      ],
+      [
+        0,
+        0,
+        334
+      ]
+    ],
+    "correct": 337,
+    "hidden_full_horizon_silence_counts": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "hidden_silence_counts": [
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "hidden_spikes_per_sample": 5.0,
+    "mean_loss": 11.394552570621737,
+    "minimum_causal_slope": null,
+    "minimum_recorded_slope": 0.011221957737473864,
+    "output_silence_counts": [
+      0,
+      0,
+      0
+    ],
+    "output_spikes_per_sample": 3.0,
+    "per_class_accuracy": [
+      0.009009009009009009,
+      0.0,
+      1.0
+    ],
+    "runtime_seconds": 3.6835479997098446,
+    "samples": 1000,
+    "split": "validation",
+    "target_silent": 0,
+    "threshold_sensitivity_cap_activations": 0
+  },
+  "calibration": {
+    "rounds": [
+      {
+        "coverage": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "coverage_counts": [
+          5000,
+          5000,
+          5000
+        ],
+        "round": 1,
+        "row_sums": [
+          8.081581354336812,
+          10.331024293298558,
+          8.532914235847853
+        ],
+        "scaled_rows": []
+      }
+    ],
+    "scale": 1.05,
+    "succeeded": true,
+    "target": 0.99
+  },
+  "configuration": {
+    "artifacts": {
+      "checkpoint_interval": 0,
+      "plot_interval": 0,
+      "save_rasters": false
+    },
+    "calibration": {
+      "max_rounds": 40,
+      "scale": 1.05,
+      "target_fraction": 0.99
+    },
+    "data": {
+      "split_seeds": [
+        1001,
+        1002,
+        1003
+      ],
+      "test_size": 1000,
+      "train_size": 5000,
+      "validation_size": 1000
+    },
+    "initialization": {
+      "fast_hidden_gain": 1.0,
+      "heterogeneity_seed": 92,
+      "heterogeneity_sigma": 0.8,
+      "hidden_floor": 0.0,
+      "hidden_mean": 2.75,
+      "hidden_seed": 415,
+      "hidden_std": 1.15,
+      "readout_floor": 0.0,
+      "readout_mean": 1.5,
+      "readout_row_scales": [
+        0.49,
+        0.69,
+        0.66
+      ],
+      "readout_seed": 25,
+      "readout_std": 0.3,
+      "readout_target_row_sums": null
+    },
+    "loss": {
+      "margin_ms": 3.0,
+      "name": "squared_hinge"
+    },
+    "model": {
+      "alpha_per_ms": 0.025,
+      "c0": 20.0,
+      "c1": 2.0,
+      "d_max_ms": 5.0,
+      "dt_ms": 0.05,
+      "n_hidden": 5,
+      "n_inputs": 4,
+      "n_outputs": 3,
+      "omega_fast_per_ms": 0.25,
+      "omega_slow_per_ms": 0.16666666666666666,
+      "reset_drop": 5.0,
+      "silent_target_gap_ms": 2.0,
+      "slope_epsilon": 1e-12,
+      "t_end_ms": 50.0,
+      "tau_v_ms": 20.0,
+      "threshold": 1.0,
+      "v_dot_clip": 2.0
+    },
+    "optimization": {
+      "adam": {
+        "beta1": 0.9,
+        "beta2": 0.999,
+        "epsilon": 1e-08,
+        "gradient_norm_cap": 10.0,
+        "learning_rate": 0.01
+      },
+      "batch_size": 50,
+      "cosine_eta_min": 0.0,
+      "cosine_t_max": 40,
+      "epochs": 20,
+      "shuffle_seed": 2003
+    },
+    "restart": {
+      "noise_std": 1.0,
+      "offset": 0.1,
+      "seed": 3003,
+      "silence_fraction": 0.6
+    }
+  },
+  "epochs": [
+    {
+      "epoch": 1,
+      "learning_rate": 0.01,
+      "restarted_hidden": [],
+      "training": {
+        "accuracy": 0.4126,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "clipped_updates": 0,
+        "correct": 2063,
+        "mean_clipped_gradient_norm": 2.3861629871364833,
+        "mean_loss": 8.643435479944348,
+        "mean_raw_gradient_norm": 2.3861629871364833,
+        "minimum_causal_slope": 0.012211569134045376,
+        "negative_weight_entry_observations": 0,
+        "samples": 5000,
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 16
+      },
+      "validation": {
+        "accuracy": 0.508,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            221,
+            22,
+            90
+          ],
+          [
+            13,
+            254,
+            66
+          ],
+          [
+            143,
+            158,
+            33
+          ]
+        ],
+        "correct": 508,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          0,
+          0,
+          0,
+          5
+        ],
+        "hidden_spikes_per_sample": 5.0,
+        "mean_loss": 6.7705236900675985,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.012158373292469061,
+        "output_silence_counts": [
+          0,
+          0,
+          0
+        ],
+        "output_spikes_per_sample": 3.0,
+        "per_class_accuracy": [
+          0.6636636636636637,
+          0.7627627627627628,
+          0.09880239520958084
+        ],
+        "runtime_seconds": 4.736859625205398,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      },
+      "validation_pre_restart": {
+        "accuracy": 0.508,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            221,
+            22,
+            90
+          ],
+          [
+            13,
+            254,
+            66
+          ],
+          [
+            143,
+            158,
+            33
+          ]
+        ],
+        "correct": 508,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          0,
+          0,
+          0,
+          5
+        ],
+        "hidden_spikes_per_sample": 5.0,
+        "mean_loss": 6.7705236900675985,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.012158373292469061,
+        "output_silence_counts": [
+          0,
+          0,
+          0
+        ],
+        "output_spikes_per_sample": 3.0,
+        "per_class_accuracy": [
+          0.6636636636636637,
+          0.7627627627627628,
+          0.09880239520958084
+        ],
+        "runtime_seconds": 4.736859625205398,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      }
+    },
+    {
+      "epoch": 2,
+      "learning_rate": 0.00998458666866564,
+      "restarted_hidden": [],
+      "training": {
+        "accuracy": 0.6014,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "clipped_updates": 0,
+        "correct": 3007,
+        "mean_clipped_gradient_norm": 1.6730914440493634,
+        "mean_loss": 5.681953770814484,
+        "mean_raw_gradient_norm": 1.6730914440493634,
+        "minimum_causal_slope": 0.0042877303412348355,
+        "negative_weight_entry_observations": 133,
+        "samples": 5000,
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 47
+      },
+      "validation": {
+        "accuracy": 0.668,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            255,
+            5,
+            73
+          ],
+          [
+            12,
+            252,
+            69
+          ],
+          [
+            82,
+            91,
+            161
+          ]
+        ],
+        "correct": 668,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          297,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          297,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.703,
+        "mean_loss": 4.6556191283414385,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.008104458190950342,
+        "output_silence_counts": [
+          0,
+          0,
+          0
+        ],
+        "output_spikes_per_sample": 3.0,
+        "per_class_accuracy": [
+          0.7657657657657657,
+          0.7567567567567568,
+          0.4820359281437126
+        ],
+        "runtime_seconds": 4.031280416995287,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      },
+      "validation_pre_restart": {
+        "accuracy": 0.668,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            255,
+            5,
+            73
+          ],
+          [
+            12,
+            252,
+            69
+          ],
+          [
+            82,
+            91,
+            161
+          ]
+        ],
+        "correct": 668,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          297,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          297,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.703,
+        "mean_loss": 4.6556191283414385,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.008104458190950342,
+        "output_silence_counts": [
+          0,
+          0,
+          0
+        ],
+        "output_spikes_per_sample": 3.0,
+        "per_class_accuracy": [
+          0.7657657657657657,
+          0.7567567567567568,
+          0.4820359281437126
+        ],
+        "runtime_seconds": 4.031280416995287,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      }
+    },
+    {
+      "epoch": 3,
+      "learning_rate": 0.009938441702975689,
+      "restarted_hidden": [],
+      "training": {
+        "accuracy": 0.7202,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "clipped_updates": 0,
+        "correct": 3601,
+        "mean_clipped_gradient_norm": 1.896870158983581,
+        "mean_loss": 3.9734661936877025,
+        "mean_raw_gradient_norm": 1.896870158983581,
+        "minimum_causal_slope": 0.006144953673159415,
+        "negative_weight_entry_observations": 222,
+        "samples": 5000,
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 27
+      },
+      "validation": {
+        "accuracy": 0.764,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            263,
+            14,
+            56
+          ],
+          [
+            22,
+            241,
+            70
+          ],
+          [
+            34,
+            40,
+            260
+          ]
+        ],
+        "correct": 764,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          398,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          398,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.602,
+        "mean_loss": 3.296942971583916,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.012864015772859318,
+        "output_silence_counts": [
+          0,
+          0,
+          0
+        ],
+        "output_spikes_per_sample": 3.0,
+        "per_class_accuracy": [
+          0.7897897897897898,
+          0.7237237237237237,
+          0.7784431137724551
+        ],
+        "runtime_seconds": 3.640500582754612,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      },
+      "validation_pre_restart": {
+        "accuracy": 0.764,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            263,
+            14,
+            56
+          ],
+          [
+            22,
+            241,
+            70
+          ],
+          [
+            34,
+            40,
+            260
+          ]
+        ],
+        "correct": 764,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          398,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          398,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.602,
+        "mean_loss": 3.296942971583916,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.012864015772859318,
+        "output_silence_counts": [
+          0,
+          0,
+          0
+        ],
+        "output_spikes_per_sample": 3.0,
+        "per_class_accuracy": [
+          0.7897897897897898,
+          0.7237237237237237,
+          0.7784431137724551
+        ],
+        "runtime_seconds": 3.640500582754612,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      }
+    },
+    {
+      "epoch": 4,
+      "learning_rate": 0.009861849601988383,
+      "restarted_hidden": [],
+      "training": {
+        "accuracy": 0.806,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "clipped_updates": 0,
+        "correct": 4030,
+        "mean_clipped_gradient_norm": 2.41571048493558,
+        "mean_loss": 2.867736947695571,
+        "mean_raw_gradient_norm": 2.41571048493558,
+        "minimum_causal_slope": 0.006121763056291041,
+        "negative_weight_entry_observations": 366,
+        "samples": 5000,
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 19
+      },
+      "validation": {
+        "accuracy": 0.839,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            273,
+            31,
+            29
+          ],
+          [
+            36,
+            254,
+            43
+          ],
+          [
+            0,
+            22,
+            312
+          ]
+        ],
+        "correct": 839,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          526,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          526,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.474,
+        "mean_loss": 2.2555958407302654,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.004682422470318043,
+        "output_silence_counts": [
+          0,
+          0,
+          142
+        ],
+        "output_spikes_per_sample": 2.858,
+        "per_class_accuracy": [
+          0.8198198198198198,
+          0.7627627627627628,
+          0.9341317365269461
+        ],
+        "runtime_seconds": 3.5796567080542445,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      },
+      "validation_pre_restart": {
+        "accuracy": 0.839,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            273,
+            31,
+            29
+          ],
+          [
+            36,
+            254,
+            43
+          ],
+          [
+            0,
+            22,
+            312
+          ]
+        ],
+        "correct": 839,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          526,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          526,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.474,
+        "mean_loss": 2.2555958407302654,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.004682422470318043,
+        "output_silence_counts": [
+          0,
+          0,
+          142
+        ],
+        "output_spikes_per_sample": 2.858,
+        "per_class_accuracy": [
+          0.8198198198198198,
+          0.7627627627627628,
+          0.9341317365269461
+        ],
+        "runtime_seconds": 3.5796567080542445,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      }
+    },
+    {
+      "epoch": 5,
+      "learning_rate": 0.009755282581475769,
+      "restarted_hidden": [],
+      "training": {
+        "accuracy": 0.8468,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "clipped_updates": 0,
+        "correct": 4234,
+        "mean_clipped_gradient_norm": 2.8854062153514106,
+        "mean_loss": 2.0966905209071007,
+        "mean_raw_gradient_norm": 2.8854062153514106,
+        "minimum_causal_slope": 0.004068763357156913,
+        "negative_weight_entry_observations": 519,
+        "samples": 5000,
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 33
+      },
+      "validation": {
+        "accuracy": 0.857,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            271,
+            30,
+            32
+          ],
+          [
+            33,
+            257,
+            43
+          ],
+          [
+            0,
+            5,
+            329
+          ]
+        ],
+        "correct": 857,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          545,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          545,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.455,
+        "mean_loss": 1.7973437033102126,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.002941209564155856,
+        "output_silence_counts": [
+          0,
+          0,
+          296
+        ],
+        "output_spikes_per_sample": 2.704,
+        "per_class_accuracy": [
+          0.8138138138138138,
+          0.7717717717717718,
+          0.9850299401197605
+        ],
+        "runtime_seconds": 4.311713041272014,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      },
+      "validation_pre_restart": {
+        "accuracy": 0.857,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            271,
+            30,
+            32
+          ],
+          [
+            33,
+            257,
+            43
+          ],
+          [
+            0,
+            5,
+            329
+          ]
+        ],
+        "correct": 857,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          545,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          545,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.455,
+        "mean_loss": 1.7973437033102126,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.002941209564155856,
+        "output_silence_counts": [
+          0,
+          0,
+          296
+        ],
+        "output_spikes_per_sample": 2.704,
+        "per_class_accuracy": [
+          0.8138138138138138,
+          0.7717717717717718,
+          0.9850299401197605
+        ],
+        "runtime_seconds": 4.311713041272014,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      }
+    },
+    {
+      "epoch": 6,
+      "learning_rate": 0.009619397662556433,
+      "restarted_hidden": [],
+      "training": {
+        "accuracy": 0.8728,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "clipped_updates": 0,
+        "correct": 4364,
+        "mean_clipped_gradient_norm": 3.245963131505992,
+        "mean_loss": 1.758573457861771,
+        "mean_raw_gradient_norm": 3.245963131505992,
+        "minimum_causal_slope": 0.005626056177036332,
+        "negative_weight_entry_observations": 623,
+        "samples": 5000,
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 38
+      },
+      "validation": {
+        "accuracy": 0.87,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            269,
+            31,
+            33
+          ],
+          [
+            22,
+            267,
+            44
+          ],
+          [
+            0,
+            0,
+            334
+          ]
+        ],
+        "correct": 870,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          555,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          555,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.445,
+        "mean_loss": 1.725884753040388,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.0010288943378503723,
+        "output_silence_counts": [
+          0,
+          0,
+          378
+        ],
+        "output_spikes_per_sample": 2.622,
+        "per_class_accuracy": [
+          0.8078078078078078,
+          0.8018018018018018,
+          1.0
+        ],
+        "runtime_seconds": 3.641998458188027,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      },
+      "validation_pre_restart": {
+        "accuracy": 0.87,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            269,
+            31,
+            33
+          ],
+          [
+            22,
+            267,
+            44
+          ],
+          [
+            0,
+            0,
+            334
+          ]
+        ],
+        "correct": 870,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          555,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          555,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.445,
+        "mean_loss": 1.725884753040388,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.0010288943378503723,
+        "output_silence_counts": [
+          0,
+          0,
+          378
+        ],
+        "output_spikes_per_sample": 2.622,
+        "per_class_accuracy": [
+          0.8078078078078078,
+          0.8018018018018018,
+          1.0
+        ],
+        "runtime_seconds": 3.641998458188027,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      }
+    },
+    {
+      "epoch": 7,
+      "learning_rate": 0.00945503262094184,
+      "restarted_hidden": [],
+      "training": {
+        "accuracy": 0.8842,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "clipped_updates": 0,
+        "correct": 4421,
+        "mean_clipped_gradient_norm": 3.216385002728926,
+        "mean_loss": 1.5524910127993312,
+        "mean_raw_gradient_norm": 3.216385002728926,
+        "minimum_causal_slope": 0.0005572044964382129,
+        "negative_weight_entry_observations": 567,
+        "samples": 5000,
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 37
+      },
+      "validation": {
+        "accuracy": 0.884,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            288,
+            23,
+            22
+          ],
+          [
+            37,
+            263,
+            33
+          ],
+          [
+            0,
+            1,
+            333
+          ]
+        ],
+        "correct": 884,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          578,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          578,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.422,
+        "mean_loss": 1.4244728041756984,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.004236576180982721,
+        "output_silence_counts": [
+          0,
+          0,
+          468
+        ],
+        "output_spikes_per_sample": 2.532,
+        "per_class_accuracy": [
+          0.8648648648648649,
+          0.7897897897897898,
+          0.9970059880239521
+        ],
+        "runtime_seconds": 3.602589374873787,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      },
+      "validation_pre_restart": {
+        "accuracy": 0.884,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            288,
+            23,
+            22
+          ],
+          [
+            37,
+            263,
+            33
+          ],
+          [
+            0,
+            1,
+            333
+          ]
+        ],
+        "correct": 884,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          578,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          578,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.422,
+        "mean_loss": 1.4244728041756984,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.004236576180982721,
+        "output_silence_counts": [
+          0,
+          0,
+          468
+        ],
+        "output_spikes_per_sample": 2.532,
+        "per_class_accuracy": [
+          0.8648648648648649,
+          0.7897897897897898,
+          0.9970059880239521
+        ],
+        "runtime_seconds": 3.602589374873787,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      }
+    },
+    {
+      "epoch": 8,
+      "learning_rate": 0.009263200821770462,
+      "restarted_hidden": [],
+      "training": {
+        "accuracy": 0.9006,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "clipped_updates": 1,
+        "correct": 4503,
+        "mean_clipped_gradient_norm": 3.0036956147059324,
+        "mean_loss": 1.400944980895004,
+        "mean_raw_gradient_norm": 3.02871686201806,
+        "minimum_causal_slope": 0.003884649456018241,
+        "negative_weight_entry_observations": 600,
+        "samples": 5000,
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 30
+      },
+      "validation": {
+        "accuracy": 0.901,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            291,
+            25,
+            17
+          ],
+          [
+            25,
+            276,
+            32
+          ],
+          [
+            0,
+            0,
+            334
+          ]
+        ],
+        "correct": 901,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          582,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          582,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.418,
+        "mean_loss": 1.3502094580466195,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.008653221409474521,
+        "output_silence_counts": [
+          0,
+          0,
+          582
+        ],
+        "output_spikes_per_sample": 2.418,
+        "per_class_accuracy": [
+          0.8738738738738738,
+          0.8288288288288288,
+          1.0
+        ],
+        "runtime_seconds": 3.603635833133012,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      },
+      "validation_pre_restart": {
+        "accuracy": 0.901,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            291,
+            25,
+            17
+          ],
+          [
+            25,
+            276,
+            32
+          ],
+          [
+            0,
+            0,
+            334
+          ]
+        ],
+        "correct": 901,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          582,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          582,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.418,
+        "mean_loss": 1.3502094580466195,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.008653221409474521,
+        "output_silence_counts": [
+          0,
+          0,
+          582
+        ],
+        "output_spikes_per_sample": 2.418,
+        "per_class_accuracy": [
+          0.8738738738738738,
+          0.8288288288288288,
+          1.0
+        ],
+        "runtime_seconds": 3.603635833133012,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      }
+    },
+    {
+      "epoch": 9,
+      "learning_rate": 0.009045084971874737,
+      "restarted_hidden": [],
+      "training": {
+        "accuracy": 0.9056,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "clipped_updates": 0,
+        "correct": 4528,
+        "mean_clipped_gradient_norm": 3.0948613929479034,
+        "mean_loss": 1.3454567776997994,
+        "mean_raw_gradient_norm": 3.0948613929479034,
+        "minimum_causal_slope": 0.0013476391024513036,
+        "negative_weight_entry_observations": 600,
+        "samples": 5000,
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 28
+      },
+      "validation": {
+        "accuracy": 0.898,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            284,
+            32,
+            17
+          ],
+          [
+            21,
+            280,
+            32
+          ],
+          [
+            0,
+            0,
+            334
+          ]
+        ],
+        "correct": 898,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          578,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          578,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.422,
+        "mean_loss": 1.326351340461287,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.010803933503807484,
+        "output_silence_counts": [
+          0,
+          0,
+          578
+        ],
+        "output_spikes_per_sample": 2.422,
+        "per_class_accuracy": [
+          0.8528528528528528,
+          0.8408408408408409,
+          1.0
+        ],
+        "runtime_seconds": 4.345515875145793,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      },
+      "validation_pre_restart": {
+        "accuracy": 0.898,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            284,
+            32,
+            17
+          ],
+          [
+            21,
+            280,
+            32
+          ],
+          [
+            0,
+            0,
+            334
+          ]
+        ],
+        "correct": 898,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          578,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          578,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.422,
+        "mean_loss": 1.326351340461287,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.010803933503807484,
+        "output_silence_counts": [
+          0,
+          0,
+          578
+        ],
+        "output_spikes_per_sample": 2.422,
+        "per_class_accuracy": [
+          0.8528528528528528,
+          0.8408408408408409,
+          1.0
+        ],
+        "runtime_seconds": 4.345515875145793,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      }
+    },
+    {
+      "epoch": 10,
+      "learning_rate": 0.008802029828000156,
+      "restarted_hidden": [],
+      "training": {
+        "accuracy": 0.9072,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "clipped_updates": 0,
+        "correct": 4536,
+        "mean_clipped_gradient_norm": 3.2387003681423736,
+        "mean_loss": 1.35722605520648,
+        "mean_raw_gradient_norm": 3.2387003681423736,
+        "minimum_causal_slope": 0.0016994117158859292,
+        "negative_weight_entry_observations": 678,
+        "samples": 5000,
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 25
+      },
+      "validation": {
+        "accuracy": 0.889,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            291,
+            21,
+            21
+          ],
+          [
+            37,
+            264,
+            32
+          ],
+          [
+            0,
+            0,
+            334
+          ]
+        ],
+        "correct": 889,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          559,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          559,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.441,
+        "mean_loss": 1.448044493813079,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.0044029228044192735,
+        "output_silence_counts": [
+          3,
+          0,
+          559
+        ],
+        "output_spikes_per_sample": 2.438,
+        "per_class_accuracy": [
+          0.8738738738738738,
+          0.7927927927927928,
+          1.0
+        ],
+        "runtime_seconds": 3.8692696248181164,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      },
+      "validation_pre_restart": {
+        "accuracy": 0.889,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            291,
+            21,
+            21
+          ],
+          [
+            37,
+            264,
+            32
+          ],
+          [
+            0,
+            0,
+            334
+          ]
+        ],
+        "correct": 889,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          559,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          559,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.441,
+        "mean_loss": 1.448044493813079,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.0044029228044192735,
+        "output_silence_counts": [
+          3,
+          0,
+          559
+        ],
+        "output_spikes_per_sample": 2.438,
+        "per_class_accuracy": [
+          0.8738738738738738,
+          0.7927927927927928,
+          1.0
+        ],
+        "runtime_seconds": 3.8692696248181164,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      }
+    },
+    {
+      "epoch": 11,
+      "learning_rate": 0.008535533905932738,
+      "restarted_hidden": [],
+      "training": {
+        "accuracy": 0.9096,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "clipped_updates": 0,
+        "correct": 4548,
+        "mean_clipped_gradient_norm": 3.2519625764824696,
+        "mean_loss": 1.3784175449583682,
+        "mean_raw_gradient_norm": 3.2519625764824696,
+        "minimum_causal_slope": 0.004326626586186444,
+        "negative_weight_entry_observations": 700,
+        "samples": 5000,
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 21
+      },
+      "validation": {
+        "accuracy": 0.904,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            292,
+            21,
+            20
+          ],
+          [
+            28,
+            278,
+            27
+          ],
+          [
+            0,
+            0,
+            334
+          ]
+        ],
+        "correct": 904,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          553,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          553,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.447,
+        "mean_loss": 1.4424964263460185,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.008180065601859793,
+        "output_silence_counts": [
+          11,
+          0,
+          559
+        ],
+        "output_spikes_per_sample": 2.43,
+        "per_class_accuracy": [
+          0.8768768768768769,
+          0.8348348348348348,
+          1.0
+        ],
+        "runtime_seconds": 3.5755104580894113,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      },
+      "validation_pre_restart": {
+        "accuracy": 0.904,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            292,
+            21,
+            20
+          ],
+          [
+            28,
+            278,
+            27
+          ],
+          [
+            0,
+            0,
+            334
+          ]
+        ],
+        "correct": 904,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          553,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          553,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.447,
+        "mean_loss": 1.4424964263460185,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.008180065601859793,
+        "output_silence_counts": [
+          11,
+          0,
+          559
+        ],
+        "output_spikes_per_sample": 2.43,
+        "per_class_accuracy": [
+          0.8768768768768769,
+          0.8348348348348348,
+          1.0
+        ],
+        "runtime_seconds": 3.5755104580894113,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      }
+    },
+    {
+      "epoch": 12,
+      "learning_rate": 0.00824724024165092,
+      "restarted_hidden": [],
+      "training": {
+        "accuracy": 0.9154,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "clipped_updates": 1,
+        "correct": 4577,
+        "mean_clipped_gradient_norm": 3.4352289824123283,
+        "mean_loss": 1.3470423670295788,
+        "mean_raw_gradient_norm": 3.436251899707285,
+        "minimum_causal_slope": 0.0068331192170024094,
+        "negative_weight_entry_observations": 762,
+        "samples": 5000,
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 35
+      },
+      "validation": {
+        "accuracy": 0.911,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            297,
+            20,
+            16
+          ],
+          [
+            33,
+            280,
+            20
+          ],
+          [
+            0,
+            0,
+            334
+          ]
+        ],
+        "correct": 911,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          540,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          540,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.46,
+        "mean_loss": 1.3643070333561598,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.004520201798342949,
+        "output_silence_counts": [
+          19,
+          0,
+          550
+        ],
+        "output_spikes_per_sample": 2.431,
+        "per_class_accuracy": [
+          0.8918918918918919,
+          0.8408408408408409,
+          1.0
+        ],
+        "runtime_seconds": 3.6282404172234237,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      },
+      "validation_pre_restart": {
+        "accuracy": 0.911,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            297,
+            20,
+            16
+          ],
+          [
+            33,
+            280,
+            20
+          ],
+          [
+            0,
+            0,
+            334
+          ]
+        ],
+        "correct": 911,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          540,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          540,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.46,
+        "mean_loss": 1.3643070333561598,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.004520201798342949,
+        "output_silence_counts": [
+          19,
+          0,
+          550
+        ],
+        "output_spikes_per_sample": 2.431,
+        "per_class_accuracy": [
+          0.8918918918918919,
+          0.8408408408408409,
+          1.0
+        ],
+        "runtime_seconds": 3.6282404172234237,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      }
+    },
+    {
+      "epoch": 13,
+      "learning_rate": 0.007938926261462366,
+      "restarted_hidden": [],
+      "training": {
+        "accuracy": 0.919,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "clipped_updates": 1,
+        "correct": 4595,
+        "mean_clipped_gradient_norm": 3.4297726327852707,
+        "mean_loss": 1.2594163099050446,
+        "mean_raw_gradient_norm": 3.456686982795564,
+        "minimum_causal_slope": 0.005967655019880298,
+        "negative_weight_entry_observations": 900,
+        "samples": 5000,
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 46
+      },
+      "validation": {
+        "accuracy": 0.907,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            289,
+            25,
+            19
+          ],
+          [
+            24,
+            284,
+            25
+          ],
+          [
+            0,
+            0,
+            334
+          ]
+        ],
+        "correct": 907,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          511,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          511,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.489,
+        "mean_loss": 1.2400093983278377,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.010141324689589904,
+        "output_silence_counts": [
+          32,
+          0,
+          532
+        ],
+        "output_spikes_per_sample": 2.436,
+        "per_class_accuracy": [
+          0.8678678678678678,
+          0.8528528528528528,
+          1.0
+        ],
+        "runtime_seconds": 3.6256663338281214,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      },
+      "validation_pre_restart": {
+        "accuracy": 0.907,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            289,
+            25,
+            19
+          ],
+          [
+            24,
+            284,
+            25
+          ],
+          [
+            0,
+            0,
+            334
+          ]
+        ],
+        "correct": 907,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          511,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          511,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.489,
+        "mean_loss": 1.2400093983278377,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.010141324689589904,
+        "output_silence_counts": [
+          32,
+          0,
+          532
+        ],
+        "output_spikes_per_sample": 2.436,
+        "per_class_accuracy": [
+          0.8678678678678678,
+          0.8528528528528528,
+          1.0
+        ],
+        "runtime_seconds": 3.6256663338281214,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      }
+    },
+    {
+      "epoch": 14,
+      "learning_rate": 0.0076124928235797445,
+      "restarted_hidden": [],
+      "training": {
+        "accuracy": 0.9168,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "clipped_updates": 0,
+        "correct": 4584,
+        "mean_clipped_gradient_norm": 4.119812422140085,
+        "mean_loss": 1.2249482601233364,
+        "mean_raw_gradient_norm": 4.119812422140085,
+        "minimum_causal_slope": 0.0036683321572761555,
+        "negative_weight_entry_observations": 903,
+        "samples": 5000,
+        "target_silent": 1,
+        "threshold_sensitivity_cap_activations": 64
+      },
+      "validation": {
+        "accuracy": 0.923,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            281,
+            35,
+            17
+          ],
+          [
+            7,
+            315,
+            11
+          ],
+          [
+            0,
+            7,
+            327
+          ]
+        ],
+        "correct": 923,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          493,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          493,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.507,
+        "mean_loss": 1.203549524166868,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.005402681684235922,
+        "output_silence_counts": [
+          53,
+          0,
+          551
+        ],
+        "output_spikes_per_sample": 2.396,
+        "per_class_accuracy": [
+          0.8438438438438438,
+          0.9459459459459459,
+          0.9790419161676647
+        ],
+        "runtime_seconds": 4.527138457633555,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      },
+      "validation_pre_restart": {
+        "accuracy": 0.923,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            281,
+            35,
+            17
+          ],
+          [
+            7,
+            315,
+            11
+          ],
+          [
+            0,
+            7,
+            327
+          ]
+        ],
+        "correct": 923,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          493,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          493,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.507,
+        "mean_loss": 1.203549524166868,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.005402681684235922,
+        "output_silence_counts": [
+          53,
+          0,
+          551
+        ],
+        "output_spikes_per_sample": 2.396,
+        "per_class_accuracy": [
+          0.8438438438438438,
+          0.9459459459459459,
+          0.9790419161676647
+        ],
+        "runtime_seconds": 4.527138457633555,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 0,
+        "threshold_sensitivity_cap_activations": 0
+      }
+    },
+    {
+      "epoch": 15,
+      "learning_rate": 0.007269952498697734,
+      "restarted_hidden": [],
+      "training": {
+        "accuracy": 0.9254,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "clipped_updates": 2,
+        "correct": 4627,
+        "mean_clipped_gradient_norm": 4.288652390446864,
+        "mean_loss": 1.1325831030700884,
+        "mean_raw_gradient_norm": 4.493419080686545,
+        "minimum_causal_slope": 0.0036571208069304806,
+        "negative_weight_entry_observations": 1041,
+        "samples": 5000,
+        "target_silent": 4,
+        "threshold_sensitivity_cap_activations": 89
+      },
+      "validation": {
+        "accuracy": 0.934,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            292,
+            27,
+            14
+          ],
+          [
+            15,
+            310,
+            8
+          ],
+          [
+            2,
+            0,
+            332
+          ]
+        ],
+        "correct": 934,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          492,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          492,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.508,
+        "mean_loss": 1.097487197973806,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.0029954518060866632,
+        "output_silence_counts": [
+          76,
+          0,
+          578
+        ],
+        "output_spikes_per_sample": 2.346,
+        "per_class_accuracy": [
+          0.8768768768768769,
+          0.9309309309309309,
+          0.9940119760479041
+        ],
+        "runtime_seconds": 3.8770546251907945,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 2,
+        "threshold_sensitivity_cap_activations": 0
+      },
+      "validation_pre_restart": {
+        "accuracy": 0.934,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            292,
+            27,
+            14
+          ],
+          [
+            15,
+            310,
+            8
+          ],
+          [
+            2,
+            0,
+            332
+          ]
+        ],
+        "correct": 934,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          492,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          492,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.508,
+        "mean_loss": 1.097487197973806,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.0029954518060866632,
+        "output_silence_counts": [
+          76,
+          0,
+          578
+        ],
+        "output_spikes_per_sample": 2.346,
+        "per_class_accuracy": [
+          0.8768768768768769,
+          0.9309309309309309,
+          0.9940119760479041
+        ],
+        "runtime_seconds": 3.8770546251907945,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 2,
+        "threshold_sensitivity_cap_activations": 0
+      }
+    },
+    {
+      "epoch": 16,
+      "learning_rate": 0.00691341716182545,
+      "restarted_hidden": [],
+      "training": {
+        "accuracy": 0.93,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "clipped_updates": 2,
+        "correct": 4650,
+        "mean_clipped_gradient_norm": 4.465707542969338,
+        "mean_loss": 1.088892155970278,
+        "mean_raw_gradient_norm": 4.497428367381699,
+        "minimum_causal_slope": 0.0037746204878873926,
+        "negative_weight_entry_observations": 1079,
+        "samples": 5000,
+        "target_silent": 24,
+        "threshold_sensitivity_cap_activations": 121
+      },
+      "validation": {
+        "accuracy": 0.946,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            320,
+            6,
+            7
+          ],
+          [
+            28,
+            302,
+            3
+          ],
+          [
+            8,
+            2,
+            324
+          ]
+        ],
+        "correct": 946,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          482,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          482,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.518,
+        "mean_loss": 1.3175880045659982,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.0008535356353691625,
+        "output_silence_counts": [
+          78,
+          0,
+          613
+        ],
+        "output_spikes_per_sample": 2.309,
+        "per_class_accuracy": [
+          0.960960960960961,
+          0.9069069069069069,
+          0.9700598802395209
+        ],
+        "runtime_seconds": 3.687922209035605,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 7,
+        "threshold_sensitivity_cap_activations": 0
+      },
+      "validation_pre_restart": {
+        "accuracy": 0.946,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            320,
+            6,
+            7
+          ],
+          [
+            28,
+            302,
+            3
+          ],
+          [
+            8,
+            2,
+            324
+          ]
+        ],
+        "correct": 946,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          482,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          482,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.518,
+        "mean_loss": 1.3175880045659982,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.0008535356353691625,
+        "output_silence_counts": [
+          78,
+          0,
+          613
+        ],
+        "output_spikes_per_sample": 2.309,
+        "per_class_accuracy": [
+          0.960960960960961,
+          0.9069069069069069,
+          0.9700598802395209
+        ],
+        "runtime_seconds": 3.687922209035605,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 7,
+        "threshold_sensitivity_cap_activations": 0
+      }
+    },
+    {
+      "epoch": 17,
+      "learning_rate": 0.006545084971874737,
+      "restarted_hidden": [],
+      "training": {
+        "accuracy": 0.9058,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "clipped_updates": 9,
+        "correct": 4529,
+        "mean_clipped_gradient_norm": 5.252883645574017,
+        "mean_loss": 1.7645395500073366,
+        "mean_raw_gradient_norm": 5.52358308391951,
+        "minimum_causal_slope": 0.0015806551949617887,
+        "negative_weight_entry_observations": 1100,
+        "samples": 5000,
+        "target_silent": 233,
+        "threshold_sensitivity_cap_activations": 176
+      },
+      "validation": {
+        "accuracy": 0.869,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            270,
+            61,
+            2
+          ],
+          [
+            21,
+            308,
+            4
+          ],
+          [
+            5,
+            38,
+            291
+          ]
+        ],
+        "correct": 869,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          467,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          467,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.533,
+        "mean_loss": 1.9969270639719663,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.000676549546465588,
+        "output_silence_counts": [
+          462,
+          0,
+          659
+        ],
+        "output_spikes_per_sample": 1.879,
+        "per_class_accuracy": [
+          0.8108108108108109,
+          0.924924924924925,
+          0.8712574850299402
+        ],
+        "runtime_seconds": 4.339491333812475,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 85,
+        "threshold_sensitivity_cap_activations": 0
+      },
+      "validation_pre_restart": {
+        "accuracy": 0.869,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            270,
+            61,
+            2
+          ],
+          [
+            21,
+            308,
+            4
+          ],
+          [
+            5,
+            38,
+            291
+          ]
+        ],
+        "correct": 869,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          467,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          467,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.533,
+        "mean_loss": 1.9969270639719663,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.000676549546465588,
+        "output_silence_counts": [
+          462,
+          0,
+          659
+        ],
+        "output_spikes_per_sample": 1.879,
+        "per_class_accuracy": [
+          0.8108108108108109,
+          0.924924924924925,
+          0.8712574850299402
+        ],
+        "runtime_seconds": 4.339491333812475,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 85,
+        "threshold_sensitivity_cap_activations": 0
+      }
+    },
+    {
+      "epoch": 18,
+      "learning_rate": 0.0061672268192795275,
+      "restarted_hidden": [],
+      "training": {
+        "accuracy": 0.814,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "clipped_updates": 1,
+        "correct": 4070,
+        "mean_clipped_gradient_norm": 3.9417995284372784,
+        "mean_loss": 2.5132009239842503,
+        "mean_raw_gradient_norm": 3.9663202214956423,
+        "minimum_causal_slope": 0.0039877817963574315,
+        "negative_weight_entry_observations": 1100,
+        "samples": 5000,
+        "target_silent": 702,
+        "threshold_sensitivity_cap_activations": 143
+      },
+      "validation": {
+        "accuracy": 0.799,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            232,
+            101,
+            0
+          ],
+          [
+            11,
+            315,
+            7
+          ],
+          [
+            0,
+            82,
+            252
+          ]
+        ],
+        "correct": 799,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          455,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          455,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.545,
+        "mean_loss": 2.4638803810577845,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.0028915532555959357,
+        "output_silence_counts": [
+          590,
+          0,
+          706
+        ],
+        "output_spikes_per_sample": 1.704,
+        "per_class_accuracy": [
+          0.6966966966966966,
+          0.9459459459459459,
+          0.7544910179640718
+        ],
+        "runtime_seconds": 4.584017291199416,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 155,
+        "threshold_sensitivity_cap_activations": 0
+      },
+      "validation_pre_restart": {
+        "accuracy": 0.799,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            232,
+            101,
+            0
+          ],
+          [
+            11,
+            315,
+            7
+          ],
+          [
+            0,
+            82,
+            252
+          ]
+        ],
+        "correct": 799,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          455,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          455,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.545,
+        "mean_loss": 2.4638803810577845,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.0028915532555959357,
+        "output_silence_counts": [
+          590,
+          0,
+          706
+        ],
+        "output_spikes_per_sample": 1.704,
+        "per_class_accuracy": [
+          0.6966966966966966,
+          0.9459459459459459,
+          0.7544910179640718
+        ],
+        "runtime_seconds": 4.584017291199416,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 155,
+        "threshold_sensitivity_cap_activations": 0
+      }
+    },
+    {
+      "epoch": 19,
+      "learning_rate": 0.0057821723252011546,
+      "restarted_hidden": [],
+      "training": {
+        "accuracy": 0.822,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "clipped_updates": 1,
+        "correct": 4110,
+        "mean_clipped_gradient_norm": 3.297797749908426,
+        "mean_loss": 2.337177919439385,
+        "mean_raw_gradient_norm": 3.3214641778678398,
+        "minimum_causal_slope": 0.0007565662554690489,
+        "negative_weight_entry_observations": 1100,
+        "samples": 5000,
+        "target_silent": 709,
+        "threshold_sensitivity_cap_activations": 132
+      },
+      "validation": {
+        "accuracy": 0.816,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            247,
+            86,
+            0
+          ],
+          [
+            11,
+            317,
+            5
+          ],
+          [
+            0,
+            82,
+            252
+          ]
+        ],
+        "correct": 816,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          457,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          457,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.543,
+        "mean_loss": 2.284174901492882,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.0023488565400218765,
+        "output_silence_counts": [
+          583,
+          0,
+          712
+        ],
+        "output_spikes_per_sample": 1.705,
+        "per_class_accuracy": [
+          0.7417417417417418,
+          0.9519519519519519,
+          0.7544910179640718
+        ],
+        "runtime_seconds": 3.575326375197619,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 145,
+        "threshold_sensitivity_cap_activations": 0
+      },
+      "validation_pre_restart": {
+        "accuracy": 0.816,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            247,
+            86,
+            0
+          ],
+          [
+            11,
+            317,
+            5
+          ],
+          [
+            0,
+            82,
+            252
+          ]
+        ],
+        "correct": 816,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          457,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          457,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.543,
+        "mean_loss": 2.284174901492882,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.0023488565400218765,
+        "output_silence_counts": [
+          583,
+          0,
+          712
+        ],
+        "output_spikes_per_sample": 1.705,
+        "per_class_accuracy": [
+          0.7417417417417418,
+          0.9519519519519519,
+          0.7544910179640718
+        ],
+        "runtime_seconds": 3.575326375197619,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 145,
+        "threshold_sensitivity_cap_activations": 0
+      }
+    },
+    {
+      "epoch": 20,
+      "learning_rate": 0.0053922954786392256,
+      "restarted_hidden": [],
+      "training": {
+        "accuracy": 0.8312,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "clipped_updates": 2,
+        "correct": 4156,
+        "mean_clipped_gradient_norm": 3.5708678708493364,
+        "mean_loss": 2.209107099429412,
+        "mean_raw_gradient_norm": 3.6394265646427932,
+        "minimum_causal_slope": 0.0017841043814291635,
+        "negative_weight_entry_observations": 1100,
+        "samples": 5000,
+        "target_silent": 681,
+        "threshold_sensitivity_cap_activations": 161
+      },
+      "validation": {
+        "accuracy": 0.863,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            279,
+            54,
+            0
+          ],
+          [
+            16,
+            310,
+            7
+          ],
+          [
+            1,
+            59,
+            274
+          ]
+        ],
+        "correct": 863,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          454,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          454,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.546,
+        "mean_loss": 1.9036720813670325,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.001450509694954416,
+        "output_silence_counts": [
+          544,
+          0,
+          688
+        ],
+        "output_spikes_per_sample": 1.768,
+        "per_class_accuracy": [
+          0.8378378378378378,
+          0.9309309309309309,
+          0.8203592814371258
+        ],
+        "runtime_seconds": 3.612944624852389,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 110,
+        "threshold_sensitivity_cap_activations": 0
+      },
+      "validation_pre_restart": {
+        "accuracy": 0.863,
+        "all_silent": 0,
+        "ambiguous_ties": 0,
+        "confusion_matrix": [
+          [
+            279,
+            54,
+            0
+          ],
+          [
+            16,
+            310,
+            7
+          ],
+          [
+            1,
+            59,
+            274
+          ]
+        ],
+        "correct": 863,
+        "hidden_full_horizon_silence_counts": [
+          0,
+          454,
+          0,
+          0,
+          0
+        ],
+        "hidden_silence_counts": [
+          0,
+          454,
+          0,
+          0,
+          0
+        ],
+        "hidden_spikes_per_sample": 4.546,
+        "mean_loss": 1.9036720813670325,
+        "minimum_causal_slope": null,
+        "minimum_recorded_slope": 0.001450509694954416,
+        "output_silence_counts": [
+          544,
+          0,
+          688
+        ],
+        "output_spikes_per_sample": 1.768,
+        "per_class_accuracy": [
+          0.8378378378378378,
+          0.9309309309309309,
+          0.8203592814371258
+        ],
+        "runtime_seconds": 3.612944624852389,
+        "samples": 1000,
+        "split": "validation",
+        "target_silent": 110,
+        "threshold_sensitivity_cap_activations": 0
+      }
+    }
+  ],
+  "final_train": {
+    "accuracy": 0.8528,
+    "all_silent": 0,
+    "ambiguous_ties": 0,
+    "confusion_matrix": [
+      [
+        1345,
+        313,
+        9
+      ],
+      [
+        100,
+        1515,
+        52
+      ],
+      [
+        3,
+        259,
+        1404
+      ]
+    ],
+    "correct": 4264,
+    "hidden_full_horizon_silence_counts": [
+      0,
+      2255,
+      0,
+      0,
+      0
+    ],
+    "hidden_silence_counts": [
+      0,
+      2255,
+      0,
+      0,
+      0
+    ],
+    "hidden_spikes_per_sample": 4.549,
+    "mean_loss": 2.0364338544864804,
+    "minimum_causal_slope": null,
+    "minimum_recorded_slope": 0.0008442103389025735,
+    "output_silence_counts": [
+      2801,
+      0,
+      3359
+    ],
+    "output_spikes_per_sample": 1.768,
+    "per_class_accuracy": [
+      0.8068386322735452,
+      0.9088182363527294,
+      0.8427370948379351
+    ],
+    "runtime_seconds": 18.309322124812752,
+    "samples": 5000,
+    "split": "train",
+    "target_silent": 552,
+    "threshold_sensitivity_cap_activations": 0
+  },
+  "final_validation": {
+    "accuracy": 0.863,
+    "all_silent": 0,
+    "ambiguous_ties": 0,
+    "confusion_matrix": [
+      [
+        279,
+        54,
+        0
+      ],
+      [
+        16,
+        310,
+        7
+      ],
+      [
+        1,
+        59,
+        274
+      ]
+    ],
+    "correct": 863,
+    "hidden_full_horizon_silence_counts": [
+      0,
+      454,
+      0,
+      0,
+      0
+    ],
+    "hidden_silence_counts": [
+      0,
+      454,
+      0,
+      0,
+      0
+    ],
+    "hidden_spikes_per_sample": 4.546,
+    "mean_loss": 1.9036720813670325,
+    "minimum_causal_slope": null,
+    "minimum_recorded_slope": 0.001450509694954416,
+    "output_silence_counts": [
+      544,
+      0,
+      688
+    ],
+    "output_spikes_per_sample": 1.768,
+    "per_class_accuracy": [
+      0.8378378378378378,
+      0.9309309309309309,
+      0.8203592814371258
+    ],
+    "runtime_seconds": 3.612944624852389,
+    "samples": 1000,
+    "split": "validation",
+    "target_silent": 110,
+    "threshold_sensitivity_cap_activations": 0
+  },
+  "in_epoch_bump": {
+    "amount": 0.05,
+    "enabled": true,
+    "interval_batches": 10,
+    "silence_fraction": 0.5
+  },
+  "initialization": {
+    "w_in_row_sums": [
+      13.283763194123711,
+      10.065768660083371,
+      8.943641070020751,
+      8.180224558281292,
+      6.006078591882725
+    ],
+    "w_out_row_sums_after_calibration": [
+      8.081581354336812,
+      10.331024293298558,
+      8.532914235847853
+    ],
+    "w_out_row_sums_before_calibration": [
+      8.081581354336812,
+      10.331024293298558,
+      8.532914235847853
+    ]
+  },
+  "omega_training": {
+    "clamp_maximum": 0.35,
+    "clamp_minimum": 0.1,
+    "enabled": true,
+    "learning_rate_scale": 0.01,
+    "maximum": 0.35,
+    "minimum": 0.1329079047656738,
+    "values": [
+      0.294534602521358,
+      0.35,
+      0.15339461588949282,
+      0.1329079047656738,
+      0.1741548488993676,
+      0.1539687806413165,
+      0.14862534407017214,
+      0.2079521581414912
+    ]
+  },
+  "restart_history": [
+    {
+      "amount": 0.05,
+      "batch": 80,
+      "epoch": 4,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 20,
+      "epoch": 5,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 30,
+      "epoch": 5,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 40,
+      "epoch": 5,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 50,
+      "epoch": 5,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 60,
+      "epoch": 5,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 70,
+      "epoch": 5,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 80,
+      "epoch": 5,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 90,
+      "epoch": 5,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 100,
+      "epoch": 5,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 10,
+      "epoch": 6,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 20,
+      "epoch": 6,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 30,
+      "epoch": 6,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 40,
+      "epoch": 6,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 50,
+      "epoch": 6,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 60,
+      "epoch": 6,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 70,
+      "epoch": 6,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 80,
+      "epoch": 6,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 90,
+      "epoch": 6,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 100,
+      "epoch": 6,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 10,
+      "epoch": 7,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 20,
+      "epoch": 7,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 30,
+      "epoch": 7,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 40,
+      "epoch": 7,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 50,
+      "epoch": 7,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 60,
+      "epoch": 7,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 70,
+      "epoch": 7,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 80,
+      "epoch": 7,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 90,
+      "epoch": 7,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 100,
+      "epoch": 7,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 10,
+      "epoch": 8,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 20,
+      "epoch": 8,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 30,
+      "epoch": 8,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 40,
+      "epoch": 8,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 50,
+      "epoch": 8,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 60,
+      "epoch": 8,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 70,
+      "epoch": 8,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 80,
+      "epoch": 8,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 90,
+      "epoch": 8,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 100,
+      "epoch": 8,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 10,
+      "epoch": 9,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 20,
+      "epoch": 9,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 30,
+      "epoch": 9,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 40,
+      "epoch": 9,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 50,
+      "epoch": 9,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 60,
+      "epoch": 9,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 70,
+      "epoch": 9,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 80,
+      "epoch": 9,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 90,
+      "epoch": 9,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 100,
+      "epoch": 9,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 10,
+      "epoch": 10,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 20,
+      "epoch": 10,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 30,
+      "epoch": 10,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 40,
+      "epoch": 10,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 50,
+      "epoch": 10,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 60,
+      "epoch": 10,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 70,
+      "epoch": 10,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 80,
+      "epoch": 10,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 90,
+      "epoch": 10,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 100,
+      "epoch": 10,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 10,
+      "epoch": 11,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 20,
+      "epoch": 11,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 30,
+      "epoch": 11,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 40,
+      "epoch": 11,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 50,
+      "epoch": 11,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 60,
+      "epoch": 11,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 70,
+      "epoch": 11,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 80,
+      "epoch": 11,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 90,
+      "epoch": 11,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 100,
+      "epoch": 11,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 10,
+      "epoch": 12,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 20,
+      "epoch": 12,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 30,
+      "epoch": 12,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 40,
+      "epoch": 12,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 50,
+      "epoch": 12,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 70,
+      "epoch": 12,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 80,
+      "epoch": 12,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 90,
+      "epoch": 12,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 100,
+      "epoch": 12,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 10,
+      "epoch": 13,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 20,
+      "epoch": 13,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 30,
+      "epoch": 13,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 40,
+      "epoch": 13,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 60,
+      "epoch": 13,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 70,
+      "epoch": 13,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 80,
+      "epoch": 13,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 90,
+      "epoch": 13,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 100,
+      "epoch": 13,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 10,
+      "epoch": 14,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 20,
+      "epoch": 14,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 40,
+      "epoch": 14,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 50,
+      "epoch": 14,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 60,
+      "epoch": 14,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 80,
+      "epoch": 14,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 90,
+      "epoch": 14,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 100,
+      "epoch": 14,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 10,
+      "epoch": 15,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 30,
+      "epoch": 15,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 50,
+      "epoch": 15,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 70,
+      "epoch": 15,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 90,
+      "epoch": 15,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 10,
+      "epoch": 16,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 20,
+      "epoch": 16,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 40,
+      "epoch": 16,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 90,
+      "epoch": 16,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 30,
+      "epoch": 17,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 60,
+      "epoch": 17,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 80,
+      "epoch": 17,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    },
+    {
+      "amount": 0.05,
+      "batch": 60,
+      "epoch": 18,
+      "hidden": [
+        1
+      ],
+      "interval_batches": 10,
+      "kind": "in_epoch_bump",
+      "silence_fraction": 0.5
+    }
+  ],
+  "runtime_seconds": 622.9073777082376,
+  "test": null,
+  "test_evaluations": 0
+}

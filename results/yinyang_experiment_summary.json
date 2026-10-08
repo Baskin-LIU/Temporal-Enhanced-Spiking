@@ -1,0 +1,145 @@
+{
+  "canonical_experiment": "squared_hinge_margin2_restart_offset0.1",
+  "experiments": [
+    {
+      "best_validation_accuracy": 0.947,
+      "best_validation_epoch": 14,
+      "final_validation_accuracy": 0.929,
+      "first_epoch_at_best_validation": 13,
+      "loss": "squared_hinge",
+      "margin_ms": 2.0,
+      "name": "squared_hinge_margin2_restart_offset0.1",
+      "restart_epochs": [
+        6,
+        11,
+        12,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      "restart_offset": 0.1,
+      "runtime_seconds": 1381.1849954156205,
+      "source_run": "yinyang_quarter_sixth_hinge_restart010_epoch40_2026-10-01",
+      "test_accuracy": 0.935,
+      "test_output_silence_counts": [
+        230,
+        0,
+        207
+      ],
+      "test_target_silent": 0
+    },
+    {
+      "best_validation_accuracy": 0.955,
+      "best_validation_epoch": 29,
+      "final_validation_accuracy": 0.924,
+      "first_epoch_at_best_validation": 29,
+      "loss": "squared_hinge",
+      "margin_ms": 2.0,
+      "name": "squared_hinge_margin2_restart_offset0.25",
+      "restart_epochs": [
+        6,
+        11,
+        12,
+        16
+      ],
+      "restart_offset": 0.25,
+      "runtime_seconds": 1260.6862078751437,
+      "source_run": "yinyang_quarter_sixth_hinge_restart025_epoch40_2026-10-01",
+      "test_accuracy": 0.92,
+      "test_output_silence_counts": [
+        622,
+        91,
+        659
+      ],
+      "test_target_silent": 59
+    },
+    {
+      "best_validation_accuracy": 0.88,
+      "best_validation_epoch": 25,
+      "final_validation_accuracy": 0.87,
+      "first_epoch_at_best_validation": 25,
+      "loss": "delgrad",
+      "margin_ms": 0.16,
+      "name": "delgrad_margin0.16_restart_offset0.1",
+      "restart_epochs": [],
+      "restart_offset": 0.1,
+      "runtime_seconds": 1330.0821482501924,
+      "source_run": "yinyang_quarter_sixth_delgrad_m016_restart010_epoch40_2026-10-02",
+      "test_accuracy": 0.886,
+      "test_output_silence_counts": [
+        0,
+        0,
+        0
+      ],
+      "test_target_silent": 0
+    },
+    {
+      "best_validation_accuracy": 0.911,
+      "best_validation_epoch": 26,
+      "final_validation_accuracy": 0.905,
+      "first_epoch_at_best_validation": 26,
+      "loss": "delgrad",
+      "margin_ms": 1.0,
+      "name": "delgrad_margin1_restart_offset0.1",
+      "restart_epochs": [],
+      "restart_offset": 0.1,
+      "runtime_seconds": 1282.9407518748194,
+      "source_run": "yinyang_quarter_sixth_delgrad_m1_restart010_epoch40_2026-10-02",
+      "test_accuracy": 0.908,
+      "test_output_silence_counts": [
+        0,
+        0,
+        0
+      ],
+      "test_target_silent": 0
+    },
+    {
+      "best_validation_accuracy": 0.946,
+      "best_validation_epoch": 26,
+      "final_validation_accuracy": 0.613,
+      "first_epoch_at_best_validation": 26,
+      "loss": "delgrad",
+      "margin_ms": 2.0,
+      "name": "delgrad_margin2_restart_offset0.1",
+      "restart_epochs": [
+        7,
+        11,
+        12,
+        17,
+        18,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39
+      ],
+      "restart_offset": 0.1,
+      "runtime_seconds": 1319.086821957957,
+      "source_run": "yinyang_quarter_sixth_delgrad_m2_restart010_epoch40_2026-10-02",
+      "test_accuracy": 0.63,
+      "test_output_silence_counts": [
+        0,
+        0,
+        0
+      ],
+      "test_target_silent": 0
+    }
+  ],
+  "selection_rule": "highest measured held-out test accuracy among the five completed runs"
+}

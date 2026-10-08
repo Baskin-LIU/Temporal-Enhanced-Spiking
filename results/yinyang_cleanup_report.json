@@ -1,0 +1,156 @@
+{
+  "status": "complete_and_independently_reviewed",
+  "measured_at": "2026-10-03",
+  "canonical_result": {
+    "best_validation_accuracy": 0.947,
+    "best_validation_epoch": 14,
+    "final_validation_accuracy": 0.929,
+    "test_accuracy": 0.935,
+    "training_epochs": 40,
+    "result_status": "retained from the completed 2026-10-01 run; not retrained during cleanup"
+  },
+  "verification": {
+    "baseline": {
+      "passed": 315,
+      "failed_stale_tests": 17,
+      "runtime_seconds": 94.2
+    },
+    "final": {
+      "passed": 199,
+      "failed": 0,
+      "runtime_seconds": 24.26
+    },
+    "numerical_golden": "passed",
+    "retained_checkpoint_reproduction": {
+      "best_validation_accuracy": 0.947,
+      "test_accuracy": 0.935,
+      "retraining_performed": false
+    }
+  },
+  "small_training_smoke": {
+    "configuration": {
+      "epochs": 1,
+      "train_size": 100,
+      "validation_size": 50,
+      "test_size": 50,
+      "save_rasters": false
+    },
+    "baseline": {
+      "runtime_seconds": 12.11,
+      "artifact_files": 7,
+      "artifact_bytes": 607232
+    },
+    "cleaned": {
+      "runtime_seconds": 11.26,
+      "artifact_files": 4,
+      "artifact_bytes": 145115
+    },
+    "change": {
+      "runtime_seconds": -0.85,
+      "runtime_percent": -7.0,
+      "artifact_files": -3,
+      "artifact_bytes": -462117,
+      "artifact_bytes_percent": -76.1
+    },
+    "note": "Both measurements include process startup; the cleaned measurement also included a cold Matplotlib font-cache initialization."
+  },
+  "storage": {
+    "baseline_generated_bytes": 525110471,
+    "baseline_files": {
+      "checkpoints": 668,
+      "json": 114,
+      "png": 324
+    },
+    "retained_results": {
+      "bytes": 700020,
+      "files": 11,
+      "checkpoints": 2,
+      "json": 5,
+      "png": 4
+    },
+    "canonical_directory": {
+      "bytes": 690413,
+      "files": 8
+    },
+    "approximately_reclaimed_bytes": 524410451,
+    "approximately_reclaimed_mib": 500.1,
+    "deleted_locations": [
+      "Code/output/",
+      "Figure/",
+      "workspace caches",
+      ".DS_Store files"
+    ],
+    "recoverability": "The deleted generated history is not recoverable from this workspace because it has no Git metadata."
+  },
+  "source_size": {
+    "baseline": {
+      "production_python_lines": 12544,
+      "test_python_lines": 7565
+    },
+    "cleaned": {
+      "production_python_lines": 5612,
+      "test_python_lines": 3654,
+      "production_modules": 13,
+      "test_modules": 20
+    },
+    "reduction": {
+      "production_python_lines": 6932,
+      "production_percent": 55.3,
+      "test_python_lines": 3911,
+      "test_percent": 51.7
+    }
+  },
+  "removed_research_modules": [
+    "Code/ttfs_landscape.py",
+    "Code/refined_landscape.py",
+    "Code/landscape_diagnosis.py",
+    "Code/continuous_landscape.py",
+    "Code/continuous_gradient_check.py",
+    "Code/continuous_yinyang.py",
+    "Code/gradient_check.py",
+    "Code/benchmark_tes_core.py",
+    "Code/tune_yinyang.py",
+    "Code/test.ipynb"
+  ],
+  "retained_interfaces": [
+    "typed JSON configuration with a CLI override for every leaf",
+    "path-free deterministic experiment orchestration",
+    "compact reporting and selected checkpoints/figures",
+    "one opt-in debug module",
+    "current numerical core and modular timing losses"
+  ],
+  "independent_review": {
+    "reviewer": "Euclid",
+    "initial_result": "not ready",
+    "initial_findings": [
+      "interval checkpoints could embed a future best-validation snapshot",
+      "malformed JSON leaf types and domains were not rejected uniformly",
+      "a parsed debug flag was discarded",
+      "the required cleanup report was absent",
+      "resume and compact restart-history coverage could be stronger"
+    ],
+    "resolutions": [
+      "interval snapshots now capture only the best state known at that epoch",
+      "startup validation now checks scalar types, tuple element types, seed cardinality, intervals, and positive restart offset",
+      "the inert debug flag was removed; Code.debug remains the explicit diagnostic interface",
+      "this measured cleanup report was added",
+      "tests now prove exact two-epoch resume equivalence and exact compact restart-history serialization",
+      "equal validation accuracies now select the lower-loss checkpoint deterministically",
+      "batch sample-index arrays and the unused empty-batch constructor were removed"
+    ],
+    "re_review_result": "ready; no remaining critical or important code or artifact issues",
+    "re_review_verification": {
+      "focused_tests_passed": 48,
+      "full_tests_passed": 199,
+      "full_test_runtime_seconds": 24.06,
+      "reproduced_best_validation_accuracy": 0.947,
+      "reproduced_test_accuracy": 0.935,
+      "retraining_performed": false
+    }
+  },
+  "deliberately_out_of_scope": [
+    "the Latex theory tree",
+    "scientifically meaningful root ambiguity and numerical exceptions",
+    "additional 40-epoch training or new hyperparameter investigation"
+  ]
+}

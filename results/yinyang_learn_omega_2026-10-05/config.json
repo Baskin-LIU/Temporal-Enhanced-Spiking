@@ -1,0 +1,87 @@
+{
+  "artifacts": {
+    "checkpoint_interval": 0,
+    "plot_interval": 0,
+    "save_rasters": true
+  },
+  "calibration": {
+    "max_rounds": 40,
+    "scale": 1.05,
+    "target_fraction": 0.99
+  },
+  "data": {
+    "split_seeds": [
+      1001,
+      1002,
+      1003
+    ],
+    "test_size": 1000,
+    "train_size": 5000,
+    "validation_size": 1000
+  },
+  "initialization": {
+    "fast_hidden_gain": 1.0,
+    "heterogeneity_seed": 90,
+    "heterogeneity_sigma": 0.8,
+    "hidden_floor": 0.0,
+    "hidden_mean": 2.75,
+    "hidden_seed": 413,
+    "hidden_std": 1.15,
+    "readout_floor": 0.0,
+    "readout_mean": 1.5,
+    "readout_row_scales": [
+      0.49,
+      0.69,
+      0.66
+    ],
+    "readout_seed": 23,
+    "readout_std": 0.3,
+    "readout_target_row_sums": null
+  },
+  "loss": {
+    "margin_ms": 2.0,
+    "name": "squared_hinge"
+  },
+  "model": {
+    "alpha_per_ms": 0.025,
+    "c0": 20.0,
+    "c1": 2.0,
+    "d_max_ms": 5.0,
+    "dt_ms": 0.05,
+    "n_hidden": 12,
+    "n_inputs": 4,
+    "n_outputs": 3,
+    "omega_fast_per_ms": 0.25,
+    "omega_slow_per_ms": 0.16666666666666666,
+    "reset_drop": 5.0,
+    "silent_target_gap_ms": 2.0,
+    "slope_epsilon": 1e-12,
+    "t_end_ms": 50.0,
+    "tau_v_ms": 20.0,
+    "threshold": 1.0,
+    "v_dot_clip": 2.0
+  },
+  "optimization": {
+    "adam": {
+      "beta1": 0.9,
+      "beta2": 0.999,
+      "epsilon": 1e-08,
+      "gradient_norm_cap": 10.0,
+      "learning_rate": 0.01
+    },
+    "batch_size": 50,
+    "cosine_eta_min": 0.0,
+    "cosine_t_max": 40,
+    "epochs": 40,
+    "shuffle_seed": 2001
+  },
+  "restart": {
+    "noise_std": 1.0,
+    "offset": 0.1,
+    "seed": 3001,
+    "silence_fraction": 0.5
+  },
+  "training_options": {
+    "learn_omega": true
+  }
+}

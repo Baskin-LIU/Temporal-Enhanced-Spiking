@@ -1,0 +1,1353 @@
+\section{Method}
+\label{sec:method}
+
+\subsection{Forward dynamics}
+\label{sec:forward-dynamics}
+
+\paragraph{Oscillatory synapse and real-valued soma.}
+For neuron $i$, let the complex synaptic state be
+\begin{equation}
+    z_i(t)=I_i(t)+\mathrm{i}Q_i(t),
+\end{equation}
+where only $I_i=\operatorname{Re}[z_i]$ drives the membrane voltage. A spike
+from presynaptic neuron $j$ is delivered at its final spike time $t^s_{jk}$
+and produces a quadrature jump of size $-w_{ij}$. The compact complex dynamics
+are
+\begin{equation}
+    \dot z_i(t)=\left(-\alpha+\mathrm{i}\omega_i\right)z_i(t)
+    -\mathrm{i}\sum_j w_{ij}\sum_k\delta\!\left(t-t^s_{jk}\right).
+    \label{eq:tes-complex-synapse}
+\end{equation}
+Thus $1/\tau_I$ in an exponential EventProp synapse is replaced by the pair
+$(\alpha,\omega_i)$. The present implementation fixes $\alpha$ and $\tau_V$
+and assigns each neuron to one of two non-learned frequency groups with periods
+$8\pi\,\mathrm{ms}$ and $12\pi\,\mathrm{ms}$, corresponding to
+$\omega_{\mathrm{fast}}=1/4\,\mathrm{rad\,ms}^{-1}$ and
+$\omega_{\mathrm{slow}}=1/6\,\mathrm{rad\,ms}^{-1}$, with
+$\alpha=1/40\,\mathrm{ms}^{-1}$ and $\tau_V=20\,\mathrm{ms}$. The first
+$\lceil N_h/2\rceil$ hidden neurons use the fast group, the remaining hidden
+neurons use the slow group, and every readout uses the slow group. The synaptic
+state decays with envelope
+$\exp(-\alpha t)$ and rotates at angular frequency $\omega_i$.
+
+And the soma follows the EventProp LIF convention
+\begin{equation}
+    \tau_V\dot V_i(t)=-V_i(t)+I_i(t).
+    \label{eq:tes-voltage}
+\end{equation}
+Equivalently, between events,
+\begin{equation}
+    \frac{\mathrm d}{\mathrm dt}
+    \begin{bmatrix}V_i\\ I_i\\ Q_i\end{bmatrix}
+    =
+    \underbrace{\begin{bmatrix}
+        -1/\tau_V & 1/\tau_V & 0\\
+        0 & -\alpha & -\omega_i\\
+        0 & \omega_i & -\alpha
+    \end{bmatrix}}_{A_i}
+    \begin{bmatrix}V_i\\ I_i\\ Q_i\end{bmatrix}.
+    \label{eq:tes-real-flow}
+\end{equation}
+At an arrival event,
+\begin{equation}
+    I_i\!\left((t^s_{jk})^+\right)
+      =I_i\!\left((t^s_{jk})^-\right),
+    \qquad
+    Q_i\!\left((t^s_{jk})^+\right)
+      =Q_i\!\left((t^s_{jk})^-\right)-w_{ij}.
+    \label{eq:tes-arrival-jump}
+\end{equation}
+The impulse is applied to the quadrature state. Starting from zero state, one
+arrival produces
+$I_i(t)=w_{ij}e^{-\alpha(t-t^s_{jk})}
+\sin(\omega_i(t-t^s_{jk}))$ for $t>t^s_{jk}$, so the current seen by the
+soma is a damped, sign-changing response. Importantly, $I_i$ and therefore
+$\dot V_i$ remain continuous at the arrival even though $Q_i$ jumps.
+
+For a unit-weight arrival at time zero, writing $\beta=1/\tau_V$, the voltage
+kernel is
+\begin{equation}
+ V(t)=\frac{e^{-\alpha t}
+ \left[(\beta-\alpha)\sin(\omega t)-\omega\cos(\omega t)
+ +\omega e^{-(\beta-\alpha)t}\right]}
+ {\tau_V\left[(\beta-\alpha)^2+\omega^2\right]}.
+ \label{eq:tes-unit-psp}
+\end{equation}
+Initialization matches the first positive-lobe peak to the $0.25$ unit peak of
+the historical vanilla exponential-current reference. The fast group has
+unscaled peak $0.2591420990$ at $11.1676331128\,\mathrm{ms}$ and gain
+$0.9647216756$; the slow group has unscaled peak $0.3202711116$ at
+$15.8712273368\,\mathrm{ms}$ and gain $0.7805886666$. These gains compensate
+first-lobe excitability but do not remove oscillatory curvature. Moreover, the
+$50\,\mathrm{ms}$ horizon exposes only finitely many later lobes, so temporal
+expressiveness claims are limited to crossings that occur inside this window.
+
+\paragraph{Threshold, reset, and state-dependent delay.}
+Neuron $i$ reaches threshold at the $k$th upward crossing
+\begin{equation}
+    h_i\!\left(\mathbf{x}(t^\theta_{ik})\right)
+    =V_i(t^\theta_{ik})-\vartheta_i=0,
+    \qquad
+    \dot V^\theta_{ik}>0,
+    \label{eq:tes-threshold}
+\end{equation}
+where $\mathbf{x}$ denotes the state of the complete network and
+$\dot V^\theta_{ik}=
+\dot V_i((t^\theta_{ik})^-)$ is the crossing slope. The membrane is reset
+immediately at $t^\theta_{ik}$. With configured reset drop $R_i>0$, we use the
+subtractive reset
+\begin{equation}
+    V_i\!\left((t^\theta_{ik})^+\right)
+      =V_i\!\left((t^\theta_{ik})^-\right)-R_i,
+    \label{eq:tes-reset}
+\end{equation}
+with $I_i$ and $Q_i$ unchanged. A hard reset can be used by replacing this map
+in the event Jacobian below.
+
+Before applying the reset, $\dot V^\theta_{ik}$ is obtained directly by
+evaluating Equation~\eqref{eq:tes-voltage} at the threshold event and no
+numerical differentiation of a voltage trace is required. This slope determines
+the axonal delay
+\begin{equation}
+    \mathfrak{d}_{ik}
+      =d_{+}\sigma\!\left(c_1-c_0\dot V^\theta_{ik}\right).
+    \label{eq:tes-delay-method}
+\end{equation}
+The spike arriving time is
+\begin{equation}
+    t^s_{ik}=t^\theta_{ik}+\mathfrak{d}_{ik}.
+    \label{eq:tes-final-spike-time}
+\end{equation}
+Since $c_0>0$, a sharper crossing yields a shorter delay. The parameter $c_1$
+sets the midpoint crossing slope $c_1/c_0$ and controls both the maximum delay
+value $d_{+}\sigma(c_1)$ and the local derivative there.
+If hardware requires a
+strictly positive $d_{\min}$, the sigmoid output can be affinely rescaled to
+$[d_{-},d_{+}]$.
+
+For an isolated contribution delivered to postsynaptic neuron $m$, this
+temporal shift corresponds to the phase offset
+    $\Delta\phi_{m\leftarrow i,k}=\omega_m\mathfrak{d}_{ik}.
+$
+The delay therefore selects the phase at which the event enters the
+postsynaptic oscillatory filter.
+
+\paragraph{Event-driven forward pass.}
+Between successive threshold and arrival events, Equation~\eqref{eq:tes-real-flow} is propagated exactly with a matrix exponential.  When a threshold event occurs, the simulator records the pre-reset slope, schedules the corresponding arrival at $t^s_{ik}$, and resets the source voltage. When a scheduled event occurs, Equation~\eqref{eq:tes-arrival-jump} is applied to every postsynaptic target. 
+
+\paragraph{Layerwise feed-forward continuous evaluation.}
+For the input--hidden--readout topology used in the present Yin--Yang
+checkpoint, neurons within a layer are conditionally independent.  We
+therefore solve every upward threshold crossing of each hidden neuron
+independently from the exact external-arrival sequence.  After every crossing,
+the configured subtractive reset is applied, an unquantized slope-dependent
+arrival is scheduled, and the same hidden stream continues to the trial
+horizon.  The merged hidden-arrival sequence then drives each readout stream,
+which is likewise allowed to cross and reset repeatedly in full-horizon mode.
+This layerwise decomposition does not require a global earliest-threshold
+search within the hidden layer.  A hidden neuron without a physical threshold
+crossing remains silent and emits no event.  Silent readouts are also absent
+from the physical event tape, while only the first physical readout threshold
+enters the squared-hinge objective.
+For the active objective, let $P$ denote
+the physical readouts.  If $P$ is nonempty, every silent readout is assigned
+the report-only effective time
+
+\begin{equation}
+    \widetilde t_f=\max_{r\in P}t_r+2\,\mathrm{ms}.
+    \label{eq:tes-fake-readout-time}
+\end{equation}
+
+If all readouts are silent, their report-only times remain $T$.  These values
+are explicitly marked as censored: they are not threshold crossings, they do
+not schedule arrivals, and they create no backward event.
+
+The full continuous mode retains all physical events through the requested
+horizon.  The optional early-stop mode instead terminates after every readout
+has a first physical spike, or after the remaining readouts are certified
+silent.  The latter certificate is applied only after all upstream arrival
+streams are closed and uses the strict sufficient condition
+$\max\{V,\sqrt{I^2+Q^2}\}<\vartheta$.  Full and early modes therefore have the
+same effective first readouts and gradients, although their retained event
+tapes and work counters can differ.  The grid-resolved solver uses the same
+model and event signs, but places crossings at grid endpoints and quantizes a
+hidden delay upward to an integer number of time steps.
+
+\subsection{TeS backward equations}
+\label{sec:tes-backward}
+
+We consider an EventProp loss consisting of a spike-time term and a
+voltage-dependent running term,
+\begin{equation}
+    \mathcal{L}
+      =l_{\mathrm p}\!\left(\{t^s_{ik}\}\right)
+       +\int_0^T l_V(\mathbf V(t),t)\,\mathrm dt.
+    \label{eq:tes-loss}
+\end{equation}
+The adjoints are propagated from $T$ to $0$, and a prime denotes the reverse
+time derivative, $'=-\mathrm d/\mathrm dt$. Between events they obey
+\begin{align}
+    \tau_V\lambda_{V_i}'
+      &=-\lambda_{V_i}-\frac{\partial l_V}{\partial V_i},
+      \label{eq:tes-adjoint-v}\\
+    \lambda_{I_i}'
+      &=\lambda_{V_i}-\alpha\lambda_{I_i}
+        +\omega_i\lambda_{Q_i},
+      \label{eq:tes-adjoint-i}\\
+    \lambda_{Q_i}'
+      &=-\omega_i\lambda_{I_i}-\alpha\lambda_{Q_i}.
+      \label{eq:tes-adjoint-q}
+\end{align}
+For Equation~\eqref{eq:tes-loss}, the terminal conditions are zero. The pair
+$(\lambda_{I_i},\lambda_{Q_i})$ therefore transports error backward through
+the transpose oscillatory dynamics, while $\lambda_{I_i}$ also receives the
+error carried by the voltage state.
+
+At the arrival of spike $(j,k)$, the additive jump in $Q_i$ has an identity
+state Jacobian. Hence all three adjoints are continuous across the arrival:
+\begin{equation}
+    \lambda_{V_i}^-=\lambda_{V_i}^+,
+    \qquad
+    \lambda_{I_i}^-=\lambda_{I_i}^+,
+    \qquad
+    \lambda_{Q_i}^-=\lambda_{Q_i}^+.
+    \label{eq:tes-arrival-adjoint-continuity}
+\end{equation}
+The arrival generates the scalar timing signal
+\begin{equation}
+    \mu_{jk}
+      =\frac{\partial l_{\mathrm p}}{\partial t^s_{jk}}
+       +\sum_i w_{ij}
+        \left(\omega_i\lambda_{I_i}^+
+              +\alpha\lambda_{Q_i}^+\right)_{t^s_{jk}},
+    \label{eq:tes-arrival-timing-signal}
+\end{equation}
+where the sum contains every postsynaptic target of neuron $j$. This scalar is
+carried backward to the threshold event that scheduled $t^s_{jk}$.
+
+For a threshold event $(i,k)$, define
+\begin{align}
+    v_{ik}&=\dot V^\theta_{ik},
+    &a_{ik}&=\ddot V_i\!\left((t^\theta_{ik})^-\right),\\
+    r_{ik}&=\sigma(c_1-c_0v_{ik}),
+    &\mathfrak d'_{ik}&=-d_+c_0r_{ik}(1-r_{ik}).
+    \label{eq:tes-threshold-auxiliary}
+\end{align}
+For the subtractive reset,
+$\dot V_{ik}^{\theta,+}=v_{ik}+R_i/\tau_V$. The reverse threshold
+updates are
+\begin{align}
+    \lambda_{V_i}^-
+      &=\underbrace{
+        \frac{\dot V_{ik}^{\theta,+}}{v_{ik}}\lambda_{V_i}^+
+        +\frac{\mu_{ik}+l_V^- -l_V^+}{\tau_Vv_{ik}}
+        }_{\text{EventProp-form term}}
+        +\underbrace{
+        \frac{\mu_{ik}\mathfrak d'_{ik}}{\tau_V}
+        \left(\frac{1}{\tau_V}+\frac{a_{ik}}{v_{ik}}\right)
+        }_{\text{state-dependent-delay correction}},
+        \label{eq:tes-threshold-adjoint-v}\\
+    \lambda_{I_i}^-
+      &=\lambda_{I_i}^+
+        -\frac{\mu_{ik}\mathfrak d'_{ik}}{\tau_V},
+        \label{eq:tes-threshold-adjoint-i}\\
+    \lambda_{Q_i}^-&=\lambda_{Q_i}^+.
+        \label{eq:tes-threshold-adjoint-q}
+\end{align}
+The first two terms of Equation~\eqref{eq:tes-threshold-adjoint-v} have the
+original EventProp structure. The final term and the jump in $\lambda_{I_i}$
+are introduced by the dependence of the delay on the crossing slope.
+
+Because a weight produces a negative jump of magnitude $w_{ij}$ in the
+postsynaptic $Q$ state, its
+gradient samples the corresponding adjoint at every transmitted spike:
+\begin{equation}
+    \frac{\mathrm d\mathcal L}{\mathrm d w_{ij}}
+      =+\sum_{k:\,j\ \mathrm{spikes}}
+        \lambda_{Q_i}\!\left(t^s_{jk}\right).
+    \label{eq:tes-weight-gradient}
+\end{equation}
+When the oscillator frequencies are learned, introduce two secondary adjoint
+helpers for every neuron, $\lambda_{I_i}^{\omega}$ and
+$\lambda_{Q_i}^{\omega}$. They are propagated backward with terminal
+conditions
+\begin{equation}
+    \lambda_{I_i}^{\omega}(T)
+      =\lambda_{Q_i}^{\omega}(T)=0
+\end{equation}
+and continuous dynamics
+\begin{align}
+    (\lambda_{I_i}^{\omega})'
+      &=-\alpha\lambda_{I_i}^{\omega}
+        +\omega_i\lambda_{Q_i}^{\omega}
+        -\lambda_{Q_i},
+        \label{eq:tes-omega-helper-i}\\
+    (\lambda_{Q_i}^{\omega})'
+      &=-\omega_i\lambda_{I_i}^{\omega}
+        -\alpha\lambda_{Q_i}^{\omega}
+        +\lambda_{I_i}.
+        \label{eq:tes-omega-helper-q}
+\end{align}
+Both helpers are continuous at thresholds and arrivals:
+\begin{equation}
+    (\lambda_{I_i}^{\omega})^-
+      =(\lambda_{I_i}^{\omega})^+,
+    \qquad
+    (\lambda_{Q_i}^{\omega})^-
+      =(\lambda_{Q_i}^{\omega})^+.
+    \label{eq:tes-omega-helper-continuity}
+\end{equation}
+For zero initial synaptic state, the frequency gradient is then accumulated
+only at arrivals into neuron $i$:
+\begin{equation}
+    \frac{\mathrm d\mathcal L}{\mathrm d\omega_i}
+      =-\sum_{(j,k)\to i}
+        w_{ij}\lambda_{Q_i}^{\omega}(t^s_{jk}).
+    \label{eq:tes-omega-gradient}
+\end{equation}
+Thus frequency learning retains an event-sparse reverse pass without storing
+the forward $I_i,Q_i$ trajectories.
+
+\paragraph{Feed-forward continuous specialization used in this checkpoint.}
+The implementation separates readout-timing objectives from neuron dynamics.
+With target readout $y$, physical readout set $P$, and an objective-specific
+margin $m$, define
+\begin{equation}
+    \tau_y=
+    \begin{cases}
+        t_y,&y\in P,\\
+        t_a+2\,\mathrm{ms},&y\notin P,\quad
+        a=\arg\max_{r\in P}t_r,
+    \end{cases}
+\end{equation}
+
+The original DelGrad equality objective, used with
+$m=1\,\mathrm{ms}$ in the 40-epoch comparison run, is
+\begin{equation}
+    \mathcal L_{\mathrm{DelGrad}}
+      =\frac12\sum_{\substack{r\in P\\r\ne y}}
+        \left((t_r-\tau_y)-m\right)^2.
+    \label{eq:tes-masked-delgrad}
+\end{equation}
+The separately selectable squared-hinge objective uses
+$m=2\,\mathrm{ms}$ by default:
+\begin{equation}
+    \mathcal L_{\mathrm{diag}}
+      =\frac12\sum_{\substack{r\in P\\r\ne y}}
+        \min\!\left\{(t_r-\tau_y)-m,0\right\}^2.
+    \label{eq:tes-masked-squared-hinge}
+\end{equation}
+Under the hinge, a physical wrong readout exactly at or beyond the margin
+contributes neither loss nor derivative. Under original DelGrad, every
+physical wrong readout contributes. A fake wrong readout is excluded from
+either objective. A fake
+target is compared with every physical wrong readout, and the derivative of
+its clipped time is routed through the unique latest physical anchor $a$.
+The fake target itself still has zero timing source and no threshold event.
+If the latest physical time is tied while the target is fake, the scalar loss
+is reportable but its derivative is declared unavailable; no arbitrary
+subgradient is used.  When all readouts are silent, the loss and
+all timing sources are zero.
+
+Because all first-spike events are already known in the feed-forward solver,
+the reverse pass is performed layer by layer.  If
+$\Phi_i(\Delta)=\exp(A_i\Delta)$ and
+$M=\operatorname{diag}(\tau_V,1,1)$, exact reverse flow over an event-free
+interval is
+\begin{equation}
+    \boldsymbol\lambda_i(t)
+      =M^{-1}\Phi_i(\Delta)^\top M
+       \boldsymbol\lambda_i(t+\Delta).
+    \label{eq:tes-exact-layerwise-adjoint-flow}
+\end{equation}
+For a physical output $r$ with loss timing source
+$g_r=\partial\mathcal L_{\mathrm{diag}}/\partial t_r$ and positive crossing
+slope $v_r$, the pre-threshold seed is
+\begin{equation}
+    \boldsymbol\lambda_r^-
+      =\begin{bmatrix}g_r/(\tau_Vv_r)&0&0\end{bmatrix}^{\!\top}.
+\end{equation}
+Reversing each hidden arrival $h\to r$ strictly before that threshold gives
+\begin{align}
+    \frac{\partial\mathcal L_{\mathrm{diag}}}
+         {\partial W^{\mathrm{out}}_{rh}}
+      &\mathrel{+}=\lambda_{Q_r},\\
+    \mu_h
+      &\mathrel{+}=W^{\mathrm{out}}_{rh}
+        \left(\omega_r\lambda_{I_r}+\alpha\lambda_{Q_r}\right).
+    \label{eq:tes-feedforward-readout-reverse}
+\end{align}
+All quantities on the right are sampled at the arrival time.  For each
+physical hidden spike $h$, its accumulated $\mu_h$, slope $v_h$,
+pre-threshold acceleration $a_h$, and delay derivative $\mathfrak d'_h$ enter
+the full reset update
+\begin{equation}
+    \boldsymbol\lambda_h^-=
+    \begin{bmatrix}
+      \dfrac{v_h+R_h/\tau_V}{v_h}\lambda_{V_h}^+
+      +\dfrac{\mu_h}{\tau_Vv_h}
+      +\dfrac{\mu_h\mathfrak d'_h}{\tau_V}
+       \left(\dfrac1{\tau_V}+\dfrac{a_h}{v_h}\right)\\[5pt]
+      \lambda_{I_h}^+-\dfrac{\mu_h\mathfrak d'_h}{\tau_V}\\[5pt]
+      \lambda_{Q_h}^+
+    \end{bmatrix}.
+    \label{eq:tes-feedforward-hidden-reset}
+\end{equation}
+Hidden thresholds, their emitted arrivals, and external arrivals are traversed
+in descending time, so the post-reset adjoint in
+Equation~\eqref{eq:tes-feedforward-hidden-reset} is generally nonzero after an
+earlier threshold.  Reversing every exact external arrival before the latest
+physical first-readout terminal then accumulates
+\begin{equation}
+    \frac{\partial\mathcal L_{\mathrm{diag}}}
+         {\partial W^{\mathrm{in}}_{hc}}
+      \mathrel{+}=\lambda_{Q_h}
+\end{equation}
+for every arrival on channel $c$.  Silent hidden rows and fake output rows
+therefore remain exactly zero.  Oscillator frequencies are frozen in this
+checkpoint.
+
+For the proof-of-learning implementation, the exact equations above are retained
+as the mathematical definition, while every occurrence of
+$1/(\tau_V\dot V)$ in both continuous and grid-resolved reverse passes is
+evaluated as $\min\{1/(\tau_V\dot V),10\}$. This numerical safeguard is a
+cap-active approximation: gradients coincide with the exact derivation only
+when the cap is inactive. Cap activations and the minimum causal crossing slope
+are recorded separately from the optimizer's global gradient-norm clipping.
+All initialization, training, validation, and test simulations use
+\verb|early_stop=False|. Physical first spikes alone define prediction; silent
+incorrect classes do not defeat a physical correct class, whereas all-silent
+trials and exact earliest-time ties are incorrect. A hidden input row is
+stochastically restarted only after causal silence on more than 500 of 1,000
+validation examples: independent seeded unit-normal noise plus an offset of
+$0.2$ is added to the four signed weights. The Adam moments and step are
+deliberately retained. Training writes a checkpoint and an inspectable
+per-epoch plot after every epoch, and the held-out test split is evaluated once
+after the final validation-driven intervention.
+
+\subsection{Derivation of the TeS backward equations}
+\label{sec:eventprop-derivation}
+
+We follow the adjoint derivation of EventProp~\cite{wunderlich2021eventprop}.
+Fix one weight $w\equiv w_{ab}$, connecting presynaptic neuron $b$ to
+postsynaptic neuron $a$. For a state variable $X$, write
+$\partial_wX=\partial X/\partial w$ for its partial derivative at fixed time,
+while $\mathrm dt_e/\mathrm dw$ denotes the total derivative of an event time.
+We differentiate the augmented loss, integrate by parts, and then choose the
+adjoint dynamics and jumps so that every occurrence of $\partial_wV$,
+$\partial_wI$, and $\partial_wQ$ cancels.
+
+\paragraph{Step 1: split the augmented loss at every event.}
+Let
+\begin{equation}
+    0=t_0<t_1<\cdots<t_M<t_{M+1}=T
+\end{equation}
+contain every threshold time and every final spike time $t^s$ (including each
+synaptic arrival). Between these events the forward equations can be written
+in implicit form as
+\begin{align}
+    f_{V_i}&=\tau_V\dot V_i+V_i-I_i=0,\\
+    f_{I_i}&=\dot I_i+\alpha I_i+\omega_iQ_i=0,\\
+    f_{Q_i}&=\dot Q_i-\omega_iI_i+\alpha Q_i=0.
+    \label{eq:tes-implicit-flow}
+\end{align}
+Adding these constraints with Lagrange multipliers on every event-free interval
+gives
+\begin{equation}
+    \widetilde{\mathcal L}
+      =l_{\mathrm p}\!\left(\{t^s_{jk}\}\right)
+       +\sum_{m=0}^{M}\int_{t_m}^{t_{m+1}}
+        \left[
+          l_V
+          +\sum_i\left(
+             \lambda_{V_i}f_{V_i}
+            +\lambda_{I_i}f_{I_i}
+            +\lambda_{Q_i}f_{Q_i}
+          \right)
+        \right]\mathrm dt.
+    \label{eq:tes-augmented-loss}
+\end{equation}
+Because $f_{V_i}=f_{I_i}=f_{Q_i}=0$ along the forward trajectory,
+$\widetilde{\mathcal L}=\mathcal L$ and their total derivatives with respect
+to $w$ are equal for any choice of the multipliers.
+
+\paragraph{Step 2: differentiate the constraints with respect to the weight.}
+The weight is constant in time, so $\partial_w$ commutes with
+$\mathrm d/\mathrm dt$. Since $\alpha$, $\omega_i$, and $\tau_V$ are fixed,
+\begin{align}
+    \partial_w f_{V_i}
+      &=\tau_V\frac{\mathrm d}{\mathrm dt}\partial_w V_i
+        +\partial_w V_i-\partial_w I_i,
+        \label{eq:tes-differentiate-fv}\\
+    \partial_w f_{I_i}
+      &=\frac{\mathrm d}{\mathrm dt}\partial_w I_i
+        +\alpha\partial_w I_i+\omega_i\partial_w Q_i,
+        \label{eq:tes-differentiate-fi}\\
+    \partial_w f_{Q_i}
+      &=\frac{\mathrm d}{\mathrm dt}\partial_w Q_i
+        -\omega_i\partial_w I_i+\alpha\partial_w Q_i.
+        \label{eq:tes-differentiate-fq}
+\end{align}
+
+\paragraph{Step 3: apply the Leibniz rule.}
+Differentiating Equation~\eqref{eq:tes-augmented-loss}, substituting
+Equations~\eqref{eq:tes-differentiate-fv}--
+\eqref{eq:tes-differentiate-fq}, and using $f_{V_i}=f_{I_i}=f_{Q_i}=0$
+gives the expression below. In particular,
+$\partial_w(\lambda_X f_X)
+=(\partial_w\lambda_X)f_X+\lambda_X\partial_wf_X$ reduces to
+$\lambda_X\partial_wf_X$ because $f_X=0$. At the moving interval boundaries
+the same constraint terms vanish, leaving only the $l_V$ boundary values:
+\begin{align}
+    \frac{\mathrm d\mathcal L}{\mathrm dw}
+    ={}&\sum_{j,k}
+       \frac{\partial l_{\mathrm p}}{\partial t^s_{jk}}
+       \frac{\mathrm dt^s_{jk}}{\mathrm dw}
+       \nonumber\\
+    &+\sum_{m=0}^{M}\int_{t_m}^{t_{m+1}}
+      \sum_i\Bigg[
+       \frac{\partial l_V}{\partial V_i}\partial_w V_i
+       +\lambda_{V_i}\left(
+          \tau_V\frac{\mathrm d}{\mathrm dt}\partial_w V_i
+          +\partial_w V_i-\partial_w I_i\right)
+       \nonumber\\
+    &\hspace{31mm}
+       +\lambda_{I_i}\left(
+          \frac{\mathrm d}{\mathrm dt}\partial_w I_i
+          +\alpha\partial_w I_i+\omega_i\partial_w Q_i\right)
+       \nonumber\\
+    &\hspace{31mm}
+       +\lambda_{Q_i}\left(
+          \frac{\mathrm d}{\mathrm dt}\partial_w Q_i
+          -\omega_i\partial_w I_i+\alpha\partial_w Q_i\right)
+      \Bigg]\mathrm dt
+      \nonumber\\
+    &+\sum_{m=0}^{M}\left[
+       l_{V,m+1}^-\frac{\mathrm dt_{m+1}}{\mathrm dw}
+       -l_{V,m}^+\frac{\mathrm dt_m}{\mathrm dw}
+      \right].
+    \label{eq:tes-gradient-before-parts}
+\end{align}
+Here $l_{V,m}^{-}$ and $l_{V,m}^{+}$ are the running loss immediately before
+and after event $t_m$. The constraint terms do not contribute at the moving
+integration limits because every $f$ is zero.
+
+\paragraph{Step 4: integrate all time derivatives by parts.}
+On each event-free interval,
+\begin{align}
+    \int_{t_m}^{t_{m+1}}
+      \tau_V\lambda_{V_i}
+      \frac{\mathrm d}{\mathrm dt}\partial_w V_i\,\mathrm dt
+      &=
+      \tau_V\left[
+        \lambda_{V_i}\partial_w V_i
+      \right]_{t_m^+}^{t_{m+1}^-}
+      -\int_{t_m}^{t_{m+1}}
+        \tau_V\dot\lambda_{V_i}\partial_w V_i\,\mathrm dt,
+        \label{eq:tes-parts-v}\\
+    \int_{t_m}^{t_{m+1}}
+      \lambda_{I_i}
+      \frac{\mathrm d}{\mathrm dt}\partial_w I_i\,\mathrm dt
+      &=
+      \left[
+        \lambda_{I_i}\partial_w I_i
+      \right]_{t_m^+}^{t_{m+1}^-}
+      -\int_{t_m}^{t_{m+1}}
+        \dot\lambda_{I_i}\partial_w I_i\,\mathrm dt,
+        \label{eq:tes-parts-i}\\
+    \int_{t_m}^{t_{m+1}}
+      \lambda_{Q_i}
+      \frac{\mathrm d}{\mathrm dt}\partial_w Q_i\,\mathrm dt
+      &=
+      \left[
+        \lambda_{Q_i}\partial_w Q_i
+      \right]_{t_m^+}^{t_{m+1}^-}
+      -\int_{t_m}^{t_{m+1}}
+        \dot\lambda_{Q_i}\partial_w Q_i\,\mathrm dt.
+        \label{eq:tes-parts-q}
+\end{align}
+Substitution into Equation~\eqref{eq:tes-gradient-before-parts} and collection
+of equal state derivatives gives
+\begin{align}
+    \frac{\mathrm d\mathcal L}{\mathrm dw}
+    ={}&\sum_{m=0}^{M}\int_{t_m}^{t_{m+1}}\sum_i
+      \Bigg[
+      \underbrace{\left(
+        \frac{\partial l_V}{\partial V_i}
+        +\lambda_{V_i}-\tau_V\dot\lambda_{V_i}
+      \right)}_{C_{V_i}}\partial_w V_i
+      \nonumber\\
+    &\hspace{21mm}
+      +\underbrace{\left(
+        -\lambda_{V_i}+\alpha\lambda_{I_i}
+        -\omega_i\lambda_{Q_i}-\dot\lambda_{I_i}
+      \right)}_{C_{I_i}}\partial_w I_i
+      \nonumber\\
+    &\hspace{21mm}
+      +\underbrace{\left(
+        \omega_i\lambda_{I_i}
+        +\alpha\lambda_{Q_i}-\dot\lambda_{Q_i}
+      \right)}_{C_{Q_i}}\partial_w Q_i
+      \Bigg]\mathrm dt
+      +B,
+    \label{eq:tes-gradient-collected}
+\end{align}
+where no term has been discarded: the complete remainder is
+\begin{align}
+    B={}&
+      \sum_{j,k}
+       \frac{\partial l_{\mathrm p}}{\partial t^s_{jk}}
+       \frac{\mathrm dt^s_{jk}}{\mathrm dw}
+      +\sum_{m=0}^{M}\left[
+       l_{V,m+1}^-\frac{\mathrm dt_{m+1}}{\mathrm dw}
+       -l_{V,m}^+\frac{\mathrm dt_m}{\mathrm dw}
+      \right]
+      \nonumber\\
+    &+\sum_{m=0}^{M}\sum_i\Bigg\{
+      \tau_V\left[
+        \lambda_{V_i}\partial_wV_i
+      \right]_{t_m^+}^{t_{m+1}^-}
+      +\left[
+        \lambda_{I_i}\partial_wI_i
+      \right]_{t_m^+}^{t_{m+1}^-}
+      \nonumber\\
+    &\hspace{34mm}
+      +\left[
+        \lambda_{Q_i}\partial_wQ_i
+      \right]_{t_m^+}^{t_{m+1}^-}
+      \Bigg\}.
+    \label{eq:tes-complete-boundary-remainder}
+\end{align}
+
+\paragraph{Step 5: choose the continuous adjoint equations.}
+The multipliers are free because the constraints vanish. We choose them so
+that the three coefficients above vanish separately:
+\begin{align}
+    C_{V_i}=0
+      &\quad\Longrightarrow\quad
+      \tau_V\dot\lambda_{V_i}
+        =\lambda_{V_i}+\frac{\partial l_V}{\partial V_i},
+        \label{eq:tes-forward-time-adjoint-v}\\
+    C_{I_i}=0
+      &\quad\Longrightarrow\quad
+      \dot\lambda_{I_i}
+        =-\lambda_{V_i}+\alpha\lambda_{I_i}
+         -\omega_i\lambda_{Q_i},
+        \label{eq:tes-forward-time-adjoint-i}\\
+    C_{Q_i}=0
+      &\quad\Longrightarrow\quad
+      \dot\lambda_{Q_i}
+        =\omega_i\lambda_{I_i}+\alpha\lambda_{Q_i}.
+        \label{eq:tes-forward-time-adjoint-q}
+\end{align}
+This makes every interval integral in
+Equation~\eqref{eq:tes-gradient-collected} exactly zero. Replacing
+$\mathrm d/\mathrm dt$ by $-\mathrm d/\mathrm dt$ for reverse-time
+integration gives Equations~\eqref{eq:tes-adjoint-v}--
+\eqref{eq:tes-adjoint-q}.
+
+\paragraph{Step 6: rearrange the interval endpoints into event terms.}
+For example, the voltage endpoints satisfy
+\begin{align}
+    &\sum_{m=0}^{M}
+      \tau_V\left[
+        \lambda_{V_i}\partial_wV_i
+      \right]_{t_m^+}^{t_{m+1}^-}
+      \nonumber\\
+    &\quad=
+      \tau_V\lambda_{V_i}(T)\partial_wV_i(T)
+      -\tau_V\lambda_{V_i}(0)\partial_wV_i(0)
+      \nonumber\\
+    &\qquad+
+      \sum_{m=1}^{M}\tau_V\left(
+        \lambda_{V_i}^-\partial_wV_i^-
+        -\lambda_{V_i}^+\partial_wV_i^+
+      \right)_{t_m}.
+    \label{eq:tes-telescope-v}
+\end{align}
+The $I_i$ and $Q_i$ endpoint sums rearrange identically.
+Parameter-independent initial states give
+$\partial_wV_i(0)=\partial_wI_i(0)=\partial_wQ_i(0)=0$, and we impose
+$\lambda_{V_i}(T)=\lambda_{I_i}(T)=\lambda_{Q_i}(T)=0$. Hence the initial
+and terminal terms vanish. The moving-limit terms telescope as
+\(
+\mathrm dt_0/\mathrm dw
+=\mathrm dt_{M+1}/\mathrm dw=0
+\), so
+\begin{equation}
+    \sum_{m=0}^{M}\left[
+       l_{V,m+1}^-\frac{\mathrm dt_{m+1}}{\mathrm dw}
+       -l_{V,m}^+\frac{\mathrm dt_m}{\mathrm dw}
+    \right]
+    =
+    \sum_{m=1}^{M}
+      (l_{V,m}^- -l_{V,m}^+)
+      \frac{\mathrm dt_m}{\mathrm dw}.
+    \label{eq:tes-telescope-loss}
+\end{equation}
+After these rearrangements,
+\begin{equation}
+    \frac{\mathrm d\mathcal L}{\mathrm dw}
+      =\sum_{m=1}^{M}\xi_m,
+    \label{eq:tes-gradient-event-sum}
+\end{equation}
+with
+\begin{align}
+    \xi_m={}&
+      \frac{\partial l_{\mathrm p}}{\partial t^s_{m}}
+      \frac{\mathrm dt^s_{m}}{\mathrm dw}
+      +(l_{V,m}^- -l_{V,m}^+)\frac{\mathrm dt_m}{\mathrm dw}
+      \nonumber\\
+    &+\sum_i\Bigg[
+      \tau_V\left(
+        \lambda_{V_i}^-\partial_wV_i^-
+        -\lambda_{V_i}^+\partial_wV_i^+
+      \right)
+      \nonumber\\
+    &\hspace{17mm}
+      +\lambda_{I_i}^-\partial_wI_i^-
+       -\lambda_{I_i}^+\partial_wI_i^+
+      +\lambda_{Q_i}^-\partial_wQ_i^-
+       -\lambda_{Q_i}^+\partial_wQ_i^+
+      \Bigg]_{t_m}.
+    \label{eq:tes-event-contribution}
+\end{align}
+This is the EventProp boundary sum specialized to the three TeS states.
+We now differentiate each transition equality directly and substitute the
+result into Equation~\eqref{eq:tes-event-contribution}.
+
+\paragraph{Step 7: partial derivatives across a post-synaptic arrival.}
+Consider the arrival of spike $(j,k)$ at a postsynaptic neuron $i$ and
+differentiate with respect to $w=w_{ab}$. The forward transition is
+\begin{equation}
+    V_i^+=V_i^-,
+    \qquad
+    I_i^+=I_i^-,
+    \qquad
+    Q_i^+=Q_i^- -w_{ij}.
+    \label{eq:tes-arrival-transition-proof}
+\end{equation}
+Substitution of these jumps into the forward differential equations gives
+\begin{align}
+    \dot V_i^+-\dot V_i^-
+      &=0,
+      \nonumber\\
+    \dot I_i^+-\dot I_i^-
+      &
+        =\omega_iw_{ij},
+      \nonumber\\
+    \dot Q_i^+-\dot Q_i^-
+      &
+        =\alpha w_{ij}.
+    \label{eq:tes-arrival-flow-change}
+\end{align}
+
+Equation~\eqref{eq:tes-arrival-transition-proof} holds at the weight-dependent
+time $t^s_{jk}$. Differentiating each equality with respect to $w$ therefore
+gives
+\begin{align}
+    \partial_wV_i^+
+      +\dot V_i^+\frac{\mathrm dt^s_{jk}}{\mathrm dw}
+      &=
+      \partial_wV_i^-
+      +\dot V_i^-\frac{\mathrm dt^s_{jk}}{\mathrm dw},
+      \label{eq:tes-arrival-differentiate-v}\\
+    \partial_wI_i^+
+      +\dot I_i^+\frac{\mathrm dt^s_{jk}}{\mathrm dw}
+      &=
+      \partial_wI_i^-
+      +\dot I_i^-\frac{\mathrm dt^s_{jk}}{\mathrm dw},
+      \label{eq:tes-arrival-differentiate-i}\\
+    \partial_wQ_i^+
+      +\dot Q_i^+\frac{\mathrm dt^s_{jk}}{\mathrm dw}
+      &=
+      \partial_wQ_i^-
+      +\dot Q_i^-\frac{\mathrm dt^s_{jk}}{\mathrm dw}
+      -\delta_{ia}\delta_{jb}.
+      \label{eq:tes-arrival-differentiate-q}
+\end{align}
+Rearranging these three equalities and using
+Equation~\eqref{eq:tes-arrival-flow-change} yields
+\begin{align}
+    \partial_wV_i^+
+      &=\partial_wV_i^-,
+      \nonumber\\
+    \partial_wI_i^+
+      &=\partial_wI_i^-
+        +(\dot I_i^- -\dot I_i^+)
+          \frac{\mathrm dt^s_{jk}}{\mathrm dw}
+       =\partial_wI_i^-
+        -\omega_iw_{ij}\frac{\mathrm dt^s_{jk}}{\mathrm dw},
+      \nonumber\\
+    \partial_wQ_i^+
+      &=\partial_wQ_i^-
+        +(\dot Q_i^- -\dot Q_i^+)
+          \frac{\mathrm dt^s_{jk}}{\mathrm dw}
+        -\delta_{ia}\delta_{jb}
+      \nonumber\\
+      &=\partial_wQ_i^-
+        -\alpha w_{ij}\frac{\mathrm dt^s_{jk}}{\mathrm dw}
+        -\delta_{ia}\delta_{jb}.
+    \label{eq:tes-arrival-partial-derivatives}
+\end{align}
+The Kronecker term is present only when the arrival crosses the differentiated
+synapse. Because $V_i$ is continuous, $l_V^-=l_V^+$ at an arrival.
+Substituting Equation~\eqref{eq:tes-arrival-partial-derivatives} into
+Equation~\eqref{eq:tes-event-contribution}, and summing over all postsynaptic
+targets of spike $(j,k)$, gives
+\begin{align}
+    \xi^s_{jk}
+    ={}&\sum_i\Big[
+       \tau_V(\lambda_{V_i}^- -\lambda_{V_i}^+)\partial_wV_i^-
+       +(\lambda_{I_i}^- -\lambda_{I_i}^+)\partial_wI_i^-
+       \nonumber\\
+    &\hspace{18mm}
+       +(\lambda_{Q_i}^- -\lambda_{Q_i}^+)\partial_wQ_i^-
+       +\lambda_{Q_i}^+\delta_{ia}\delta_{jb}
+       \Big]
+       \nonumber\\
+    &+\left[
+       \frac{\partial l_{\mathrm p}}{\partial t^s_{jk}}
+       +\sum_iw_{ij}
+        (\omega_i\lambda_{I_i}^+
+         +\alpha\lambda_{Q_i}^+)
+       \right]\frac{\mathrm dt^s_{jk}}{\mathrm dw}.
+    \label{eq:tes-arrival-boundary-expansion}
+\end{align}
+We do not want to calculate the three state partial derivatives. Their
+coefficients vanish when the arrival adjoints are chosen to be continuous:
+\begin{equation}
+    \lambda_{V_i}^-=\lambda_{V_i}^+,
+    \qquad
+    \lambda_{I_i}^-=\lambda_{I_i}^+,
+    \qquad
+    \lambda_{Q_i}^-=\lambda_{Q_i}^+.
+    \label{eq:tes-arrival-adjoint-continuity-derived}
+\end{equation}
+This is Equation~\eqref{eq:tes-arrival-adjoint-continuity}. Define the
+remaining coefficient of $\mathrm dt^s_{jk}/\mathrm dw$ as
+\begin{equation}
+    \mu_{jk}
+      =\frac{\partial l_{\mathrm p}}{\partial t^s_{jk}}
+       +\sum_i w_{ij}
+        \left(\omega_i\lambda_{I_i}^+
+              +\alpha\lambda_{Q_i}^+\right)_{t^s_{jk}},
+    \label{eq:tes-arrival-timing-signal-derived}
+\end{equation}
+which is Equation~\eqref{eq:tes-arrival-timing-signal}. The arrival
+contribution has now been reduced to
+\begin{equation}
+    \xi^s_{jk}
+      =\mu_{jk}\frac{\mathrm dt^s_{jk}}{\mathrm dw}
+       +\sum_i\lambda_{Q_i}^+
+        \delta_{ia}\delta_{jb}.
+    \label{eq:tes-arrival-after-cancellation}
+\end{equation}
+There is no direct $\lambda_V$ term in $\mu$, because $V_i$, $I_i$, and
+$\dot V_i$ do not jump at a $Q$-injected arrival. Voltage error enters
+indirectly through the $\lambda_V$ term in the continuous equation for
+$\lambda_I$.
+
+For external input spikes, $\frac{\mathrm dt^s_{\mathrm{in}}}{\mathrm dw} = 0$, thus only the Kronecker term remain nonzero.
+
+\paragraph{Step 8: partial derivatives at the pre-synaptic threshold crossing.}
+Now consider the threshold event that emitted the delayed spike from neuron $j$ and suppress the indices $(j,k)$. There is no any jumping response at post-synaptic neurons, thus their terms are all cancelled out, leaving only pre-synaptic terms. Write $v=\dot V((t^\theta)^-)>0$ and
+$a=\ddot V((t^\theta)^-)$. The threshold equation is
+\begin{equation}
+    V^-(t^\theta)-\vartheta=0.
+\end{equation}
+Differentiating this equality with respect to $w$ gives
+\begin{equation}
+    \partial_wV^-+v\frac{\mathrm dt^\theta}{\mathrm dw}=0,
+    \label{eq:tes-threshold-differentiated}
+\end{equation}
+and therefore
+\begin{equation}
+    \frac{\mathrm dt^\theta}{\mathrm dw}
+      =-\frac{1}{v}\partial_wV^-.
+    \label{eq:tes-threshold-time-variation}
+\end{equation}
+
+The crossing slope is $v=\dot V^-$. Its total derivative contains the
+fixed-time partial derivative of $\dot V^-$ and the derivative caused by the change of threshold time:
+\begin{equation}
+    \frac{\mathrm dv}{\mathrm dw}
+      =\partial_w\dot V^-
+       +a\frac{\mathrm dt^\theta}{\mathrm dw}.
+    \label{eq:tes-slope-chain-rule}
+\end{equation}
+From $\dot V=(-V+I)/\tau_V$,
+\begin{equation}
+    \partial_w\dot V^-
+      =-\frac{1}{\tau_V}\partial_wV^-
+       +\frac{1}{\tau_V}\partial_wI^-.
+    \label{eq:tes-slope-fixed-time-partial}
+\end{equation}
+Substituting Equations~\eqref{eq:tes-threshold-time-variation} and
+\eqref{eq:tes-slope-fixed-time-partial} into
+Equation~\eqref{eq:tes-slope-chain-rule} gives
+\begin{equation}
+    \frac{\mathrm dv}{\mathrm dw}
+      =-\left(\frac{1}{\tau_V}+\frac{a}{v}\right)\partial_wV^-
+       +\frac{1}{\tau_V}\partial_wI^-.
+    \label{eq:tes-slope-variation}
+\end{equation}
+The final spike time satisfies $t^s=t^\theta+\mathfrak d(v)$. Hence
+\begin{align}
+    \frac{\mathrm dt^s}{\mathrm dw}
+      &=\frac{\mathrm dt^\theta}{\mathrm dw}
+        +\mathfrak d'\frac{\mathrm dv}{\mathrm dw}
+        \nonumber\\
+      &=-\left[
+          \frac{1}{v}
+          +\mathfrak d'
+           \left(\frac{1}{\tau_V}+\frac{a}{v}\right)
+        \right]\partial_wV^-
+       +\frac{\mathfrak d'}{\tau_V}\partial_wI^-.
+    \label{eq:tes-final-time-variation}
+\end{align}
+
+The subtractive reset is defined by
+\begin{equation}
+    V^+=V^- -R,
+    \qquad I^+=I^-,
+    \qquad Q^+=Q^-.
+    \label{eq:tes-threshold-transition-proof}
+\end{equation}
+Differentiating these three equalities at $t^\theta(w)$ gives
+\begin{align}
+    \partial_wV^+
+      +\dot V^{\theta,+}\frac{\mathrm dt^\theta}{\mathrm dw}
+      &=
+      \partial_wV^-
+      +v\frac{\mathrm dt^\theta}{\mathrm dw},
+      \label{eq:tes-reset-differentiate-v}\\
+    \partial_wI^+
+      +\dot I^+\frac{\mathrm dt^\theta}{\mathrm dw}
+      &=
+      \partial_wI^-
+      +\dot I^-\frac{\mathrm dt^\theta}{\mathrm dw},
+      \label{eq:tes-reset-differentiate-i}\\
+    \partial_wQ^+
+      +\dot Q^+\frac{\mathrm dt^\theta}{\mathrm dw}
+      &=
+      \partial_wQ^-
+      +\dot Q^-\frac{\mathrm dt^\theta}{\mathrm dw}.
+      \label{eq:tes-reset-differentiate-q}
+\end{align}
+At a threshold reset, $I$ and $Q$ do not jump, so their vector fields also do
+not jump. Using Equation~\eqref{eq:tes-threshold-time-variation} in the first
+line and $\dot I^+=\dot I^-$, $\dot Q^+=\dot Q^-$ in the other two lines gives
+\begin{equation}
+    \partial_wV^+
+      =\frac{\dot V^{\theta,+}}{v}\partial_wV^-,
+    \qquad
+    \partial_wI^+=\partial_wI^-,
+    \qquad
+    \partial_wQ^+=\partial_wQ^-.
+    \label{eq:tes-reset-partial-derivatives}
+\end{equation}
+For the subtractive reset,
+$\dot V^{\theta,+}=v+R/\tau_V$. Let $\lambda_Q^-=\lambda_Q^+$, we get:
+\begin{align}
+    \xi^\theta={}&
+     \left(l_V^- -l_V^+\right)\frac{\mathrm dt^\theta}{\mathrm dw}
+     +\tau_V\left(
+        \lambda_V^-\partial_w V_j^-
+        -\lambda_V^+\partial_w V_j^+\right) +(\lambda_{I_j}^-
+       -\lambda_{I_j}^+)\partial_wI_j^-
+    \label{eq:tes-threshold_pre_threshold}
+\end{align}
+
+\paragraph{Step 9: cancel the threshold partial derivatives.}
+Each pre-synaptic crossing is corresponding to a post-synaptic arrival, whose equation~\eqref{eq:tes-arrival-after-cancellation} leaves $\mu\,\mathrm dt^s/\mathrm dw$ for this emitted spike. We combine pre- and post-synaptic (shift $\mathrm dt^s$ to $\mathrm dt^\theta$) terms from
+Equation~\eqref{eq:tes-event-contribution}:
+\begin{align}
+    \xi^\theta_{jk} + \xi^s_{jk}={}&
+     \left(l_V^- -l_V^+\right)\frac{\mathrm dt^\theta}{\mathrm dw}
+     +\tau_V\left(
+        \lambda_V^-\partial_wV^-
+        -\lambda_V^+\partial_wV^+\right)
+     +(\lambda_{I_j}^-
+       -\lambda_{I_j}^+)\partial_wI_j^-
+     \nonumber\\
+    &
+     +\mu_{jk}\left(\left[
+          \frac{1}{v}
+          +\mathfrak d'
+           \left(\frac{1}{\tau_V}+\frac{a}{v}\right)
+        \right]\partial_wV^-
+       +\frac{\mathfrak d'}{\tau_V}\partial_wI^-\right).
+    \label{eq:tes-threshold-boundary-before-substitution}
+\end{align}
+Substitution of Equations~\eqref{eq:tes-threshold-time-variation}--
+\eqref{eq:tes-reset-partial-derivatives} yields
+\begin{align}
+    \xi^\theta={}&
+      \Bigg\{
+        \tau_V\left(
+        \lambda_V^-
+        -\frac{\dot V^{\theta,+}}{v}\lambda_V^+
+        \right)
+        -\frac{l_V^- -l_V^+}{v}
+        -\mu\left[
+          \frac{1}{v}
+          +\mathfrak d'\left(\frac{1}{\tau_V}+\frac{a}{v}\right)
+        \right]
+      \Bigg\}\partial_wV^-
+      \nonumber\\
+    &+\left(
+        \lambda_I^- -\lambda_I^+
+        +\frac{\mu\mathfrak d'}{\tau_V}
+      \right)\partial_wI^-
+    \label{eq:tes-threshold-collected}
+\end{align}
+We choose the threshold adjoint jumps so that each of the three coefficients
+vanishes. 
+The $I$ coefficient gives
+\begin{equation}
+    \lambda_I^- -\lambda_I^+
+      +\frac{\mu\mathfrak d'}{\tau_V}=0
+    \quad\Longrightarrow\quad
+    \lambda_I^-=\lambda_I^+
+      -\frac{\mu\mathfrak d'}{\tau_V}.
+    \label{eq:tes-boundary-coefficient-i}
+\end{equation}
+Finally, setting the coefficient of $\partial_wV^-$ to zero and isolating
+$\lambda_V^-$ gives
+\begin{align}
+    \tau_V\lambda_V^-
+      ={}&\tau_V\frac{\dot V^{\theta,+}}{v}\lambda_V^+
+       +\frac{l_V^- -l_V^+}{v}
+       \nonumber\\
+      &+\mu\left[
+          \frac{1}{v}
+          +\mathfrak d'\left(
+             \frac{1}{\tau_V}+\frac{a}{v}
+          \right)
+       \right],
+    \label{eq:tes-boundary-coefficient-v-before-division}\\
+    \lambda_V^-
+      ={}&\frac{\dot V^{\theta,+}}{v}\lambda_V^+
+       +\frac{\mu+l_V^- -l_V^+}{\tau_Vv}
+       +\frac{\mu\mathfrak d'}{\tau_V}
+        \left(\frac{1}{\tau_V}+\frac{a}{v}\right).
+    \label{eq:tes-boundary-coefficient-v}
+\end{align}
+These are precisely Equations~\eqref{eq:tes-threshold-adjoint-v}--
+\eqref{eq:tes-threshold-adjoint-q}. With these choices,
+$\xi^\theta + \xi^s=0$: both the threshold boundary terms and the carried $\mu\,\mathrm dt^s/\mathrm dw$ term cancel without computing any state partial derivative. For readout spikes without post-synaptic target, only \eqref{eq:tes-threshold_pre_threshold} need to be taken care.
+
+\paragraph{Step 10: retain only the direct weight term.}
+The interval terms vanished in Step~5, the arrival state derivatives vanished
+in Step~7, and the threshold terms vanished in Step~9. Therefore only the
+Kronecker term in Equation~\eqref{eq:tes-arrival-after-cancellation} remains:
+\begin{align}
+    \frac{\mathrm d\mathcal L}{\mathrm dw_{ab}}
+      &=\sum_{j,k}\sum_i
+        \lambda_{Q_i}(t^s_{jk})
+        \delta_{ia}\delta_{jb}
+        \nonumber\\
+      &=\sum_{k:\,b\ \mathrm{spikes}}
+        \lambda_{Q_a}(t^s_{bk}),
+    \label{eq:tes-weight-gradient-derived}
+\end{align}
+which is Equation~\eqref{eq:tes-weight-gradient}.
+
+\subsubsection{Oscillator-frequency gradient}
+\label{sec:tes-omega-gradient-derivation}
+
+We next differentiate the same augmented loss,
+Equation~\eqref{eq:tes-augmented-loss}, with respect to one oscillator
+frequency $\omega_a$. This first adjoint stage follows the weight derivation
+above. Its event-boundary terms have the same form as those for a weight; the
+only new interval terms arise because $\omega_a$ occurs explicitly in the two
+oscillator constraints.
+
+\paragraph{Step 11: differentiate the same augmented loss with respect to
+$\omega_a$.}
+At fixed time, the differentiated constraints are
+\begin{align}
+    \partial_{\omega_a}f_{V_i}
+      &=\tau_V\frac{\mathrm d}{\mathrm dt}
+          \partial_{\omega_a}V_i
+        +\partial_{\omega_a}V_i
+        -\partial_{\omega_a}I_i,
+        \label{eq:tes-omega-differentiate-fv}\\
+    \partial_{\omega_a}f_{I_i}
+      &=\frac{\mathrm d}{\mathrm dt}\partial_{\omega_a}I_i
+        +\alpha\partial_{\omega_a}I_i
+        +\omega_i\partial_{\omega_a}Q_i
+        +\delta_{ia}Q_i,
+        \label{eq:tes-omega-differentiate-fi}\\
+    \partial_{\omega_a}f_{Q_i}
+      &=\frac{\mathrm d}{\mathrm dt}\partial_{\omega_a}Q_i
+        -\omega_i\partial_{\omega_a}I_i
+        +\alpha\partial_{\omega_a}Q_i
+        -\delta_{ia}I_i.
+        \label{eq:tes-omega-differentiate-fq}
+\end{align}
+The final terms in the last two equations are the explicit derivatives of
+$\omega_iQ_i$ and $-\omega_iI_i$, respectively.
+
+Applying the same Leibniz rule and integration by parts as in
+Steps~3--4 gives the same coefficients $C_{V_i}$, $C_{I_i}$, and $C_{Q_i}$
+as Equation~\eqref{eq:tes-gradient-collected}, together with the two explicit
+frequency terms:
+\begin{align}
+    \frac{\mathrm d\mathcal L}{\mathrm d\omega_a}
+    ={}&\sum_{m=0}^{M}\int_{t_m}^{t_{m+1}}\sum_i
+      \Big[
+        C_{V_i}\partial_{\omega_a}V_i
+       +C_{I_i}\partial_{\omega_a}I_i
+       +C_{Q_i}\partial_{\omega_a}Q_i
+      \Big]\,\mathrm dt
+      \nonumber\\
+    &+\int_0^T
+      \left(\lambda_{I_a}Q_a-\lambda_{Q_a}I_a\right)\,\mathrm dt
+      +B_{\omega_a}.
+    \label{eq:tes-omega-gradient-before-cancellation}
+\end{align}
+Here $B_{\omega_a}$ is exactly the complete boundary remainder in
+Equation~\eqref{eq:tes-complete-boundary-remainder} after replacing every
+$\partial_wX$ and $\mathrm dt_e/\mathrm dw$ by
+$\partial_{\omega_a}X$ and $\mathrm dt_e/\mathrm d\omega_a$.
+Choosing the ordinary adjoints according to
+Equations~\eqref{eq:tes-forward-time-adjoint-v}--
+\eqref{eq:tes-forward-time-adjoint-q} again sets all three $C$ coefficients
+to zero. Therefore,
+\begin{equation}
+    \frac{\mathrm d\mathcal L}{\mathrm d\omega_a}
+      =\int_0^T
+        \left(\lambda_{I_a}Q_a-\lambda_{Q_a}I_a\right)\,\mathrm dt
+       +\sum_{m=1}^{M}\xi_m^{\omega_a},
+    \label{eq:tes-omega-gradient-event-remainder}
+\end{equation}
+where $\xi_m^{\omega_a}$ is the same EventProp boundary expression as
+Equation~\eqref{eq:tes-event-contribution}, with the differentiated parameter
+changed from $w$ to $\omega_a$.
+
+\paragraph{Step 12: show that the frequency event remainder vanishes.}
+At an arrival $t^s_{jk}$, the transition remains
+$Q_i^+=Q_i^- -w_{ij}$. The weight $w_{ij}$ is independent of $\omega_a$.
+Consequently, the frequency analogue of
+Equation~\eqref{eq:tes-arrival-differentiate-q} is
+\begin{equation}
+    \partial_{\omega_a}Q_i^+
+      +\dot Q_i^+\frac{\mathrm dt^s_{jk}}{\mathrm d\omega_a}
+      =
+      \partial_{\omega_a}Q_i^-
+      +\dot Q_i^-\frac{\mathrm dt^s_{jk}}{\mathrm d\omega_a},
+    \label{eq:tes-omega-arrival-differentiate-q}
+\end{equation}
+with no Kronecker term. The $V_i$ and $I_i$ equalities are obtained from
+Equations~\eqref{eq:tes-arrival-differentiate-v} and
+\eqref{eq:tes-arrival-differentiate-i} by the same replacement
+$\partial_w\mapsto\partial_{\omega_a}$.
+Using Equation~\eqref{eq:tes-arrival-flow-change}, the three fixed-time
+partials satisfy
+\begin{align}
+    \partial_{\omega_a}V_i^+
+      &=\partial_{\omega_a}V_i^-,
+      \nonumber\\
+    \partial_{\omega_a}I_i^+
+      &=\partial_{\omega_a}I_i^-
+        -\omega_iw_{ij}
+          \frac{\mathrm dt^s_{jk}}{\mathrm d\omega_a},
+      \nonumber\\
+    \partial_{\omega_a}Q_i^+
+      &=\partial_{\omega_a}Q_i^-
+        -\alpha w_{ij}
+          \frac{\mathrm dt^s_{jk}}{\mathrm d\omega_a}.
+    \label{eq:tes-omega-arrival-partial-derivatives}
+\end{align}
+Substitution into the event boundary expression and use of the ordinary
+arrival-adjoint continuity conditions gives
+\begin{equation}
+    \xi_{jk}^{s,\omega_a}
+      =\mu_{jk}\frac{\mathrm dt^s_{jk}}{\mathrm d\omega_a}.
+    \label{eq:tes-omega-arrival-after-cancellation}
+\end{equation}
+In contrast to Equation~\eqref{eq:tes-arrival-after-cancellation}, there is
+no direct $\lambda_{Q_i}\delta_{ia}\delta_{jb}$ contribution. This is the
+only difference between the two first-stage event calculations. The scalar
+$\mu_{jk}$ is the boundary coefficient produced by the adjoint rearrangement
+and is evaluated on the forward trajectory; it is not differentiated again
+with respect to $\omega_a$.
+
+At the presynaptic threshold, Equations~\eqref{eq:tes-threshold-differentiated}--
+\eqref{eq:tes-reset-partial-derivatives} remain valid after replacing
+$w$ by $\omega_a$: the soma equation, reset map, and delay map have no
+explicit dependence on $\omega_a$ at fixed state. The same threshold adjoint
+jumps, Equations~\eqref{eq:tes-threshold-adjoint-v}--
+\eqref{eq:tes-threshold-adjoint-q}, therefore cancel
+$\mu_{jk}\,\mathrm dt^s_{jk}/\mathrm d\omega_a$ exactly. Thresholds do not
+leave a direct frequency term either. Hence
+\begin{equation}
+    \sum_{m=1}^{M}\xi_m^{\omega_a}=0,
+\end{equation}
+and the first adjoint stage gives
+\begin{equation}
+    \frac{\mathrm d\mathcal L}{\mathrm d\omega_i}
+      =\int_0^T
+        \left(\lambda_{I_i}Q_i-\lambda_{Q_i}I_i\right)\,\mathrm dt.
+    \label{eq:tes-omega-gradient-integral}
+\end{equation}
+
+\paragraph{Step 13: introduce the second adjoint augmentation.}
+Equation~\eqref{eq:tes-omega-gradient-integral} is already the complete
+frequency derivative. We now rewrite that derivative; we do not differentiate
+it again. Define
+\begin{equation}
+    \mathcal G_i
+      =\int_0^T
+        \left(\lambda_{I_i}Q_i-\lambda_{Q_i}I_i\right)\,\mathrm dt
+      =\frac{\mathrm d\mathcal L}{\mathrm d\omega_i}.
+\end{equation}
+To remove the need to retain the forward $I_i,Q_i$ trajectory, augment
+$\mathcal G_i$ on every event-free interval with the same oscillator
+constraints, now using the secondary adjoints
+$\lambda_{I_i}^{\omega}$ and $\lambda_{Q_i}^{\omega}$:
+\begin{align}
+    \widetilde{\mathcal G}_i
+      =\sum_{m=0}^{M}\int_{t_m}^{t_{m+1}}
+       \Big[
+        &\lambda_{I_i}Q_i-\lambda_{Q_i}I_i
+        -\lambda_{I_i}^{\omega}
+          (\dot I_i+\alpha I_i+\omega_iQ_i)
+        \nonumber\\
+        &-\lambda_{Q_i}^{\omega}
+          (\dot Q_i-\omega_iI_i+\alpha Q_i)
+       \Big]\,\mathrm dt.
+    \label{eq:tes-omega-second-augmented-functional}
+\end{align}
+The minus signs fix the orientation of the reverse helper equations. Because
+the two forward constraints vanish,
+$\widetilde{\mathcal G}_i=\mathcal G_i$ for arbitrary helpers.
+
+Integrating the terms containing $\dot I_i$ and $\dot Q_i$ by parts gives
+\begin{align}
+    -\int\lambda_{I_i}^{\omega}\dot I_i\,\mathrm dt
+      &=-[\lambda_{I_i}^{\omega}I_i]
+        +\int\dot\lambda_{I_i}^{\omega}I_i\,\mathrm dt,\\
+    -\int\lambda_{Q_i}^{\omega}\dot Q_i\,\mathrm dt
+      &=-[\lambda_{Q_i}^{\omega}Q_i]
+        +\int\dot\lambda_{Q_i}^{\omega}Q_i\,\mathrm dt.
+\end{align}
+Collecting the coefficients of $I_i$ and $Q_i$ then yields
+\begin{align}
+    \widetilde{\mathcal G}_i
+    ={}&\sum_{m=0}^{M}\int_{t_m}^{t_{m+1}}
+      \Big(
+        \dot\lambda_{I_i}^{\omega}
+        -\alpha\lambda_{I_i}^{\omega}
+        +\omega_i\lambda_{Q_i}^{\omega}
+        -\lambda_{Q_i}
+      \Big)I_i\,\mathrm dt
+      \nonumber\\
+    &+\sum_{m=0}^{M}\int_{t_m}^{t_{m+1}}
+      \Big(
+        \dot\lambda_{Q_i}^{\omega}
+        -\omega_i\lambda_{I_i}^{\omega}
+        -\alpha\lambda_{Q_i}^{\omega}
+        +\lambda_{I_i}
+      \Big)Q_i\,\mathrm dt
+      \nonumber\\
+    &-\sum_{m=0}^{M}
+      \left[
+        \lambda_{I_i}^{\omega}I_i
+        +\lambda_{Q_i}^{\omega}Q_i
+      \right]_{t_m^+}^{t_{m+1}^-}.
+    \label{eq:tes-omega-second-collected}
+\end{align}
+Choosing the two continuous-time coefficients to vanish and converting from
+$\mathrm d/\mathrm dt$ to the reverse-time derivative gives precisely
+Equations~\eqref{eq:tes-omega-helper-i} and
+\eqref{eq:tes-omega-helper-q}.
+
+\paragraph{Step 14: telescope the second-adjoint boundary terms.}
+Let
+\begin{equation}
+    p_i(t)=\lambda_{I_i}^{\omega}(t)I_i(t)
+           +\lambda_{Q_i}^{\omega}(t)Q_i(t).
+\end{equation}
+After the two interval coefficients have been cancelled,
+Equation~\eqref{eq:tes-omega-second-collected} telescopes to
+\begin{equation}
+    \mathcal G_i
+      =p_i(0^+)-p_i(T^-)
+       +\sum_e\left[p_i(t_e^+)-p_i(t_e^-)\right].
+    \label{eq:tes-omega-second-telescope}
+\end{equation}
+The oscillator transition has identity state Jacobian, so the secondary
+adjoints are chosen continuous as in
+Equation~\eqref{eq:tes-omega-helper-continuity}. Hence each event contributes
+\begin{equation}
+    p_i(t_e^+)-p_i(t_e^-)
+      =\lambda_{I_i}^{\omega}(t_e)\Delta I_i
+       +\lambda_{Q_i}^{\omega}(t_e)\Delta Q_i.
+    \label{eq:tes-omega-second-event-term}
+\end{equation}
+The terminal helper values vanish, and the TeS oscillator starts from
+$I_i(0)=Q_i(0)=0$, so both endpoint terms in
+Equation~\eqref{eq:tes-omega-second-telescope} vanish. A threshold reset has
+$\Delta I_i=\Delta Q_i=0$ and contributes nothing. At an arrival from
+neuron $j$, however,
+\begin{equation}
+    \Delta I_i=0,
+    \qquad
+    \Delta Q_i=-w_{ij}.
+\end{equation}
+Therefore
+\begin{equation}
+    \frac{\mathrm d\mathcal L}{\mathrm d\omega_i}
+      =-\sum_{(j,k)\to i}
+        w_{ij}\lambda_{Q_i}^{\omega}(t^s_{jk}),
+    \label{eq:tes-omega-gradient-derived}
+\end{equation}
+which is Equation~\eqref{eq:tes-omega-gradient}. The second augmentation is a
+second adjoint stage, not a second-order differential equation: it replaces
+the continuous state integral by one event-local sample at each arrival.
+
+\paragraph{Why the impulse is applied to $Q$.}
+The acceleration required in Equation~\eqref{eq:tes-slope-variation} can be
+evaluated without numerical differentiation:
+\begin{equation}
+    a_{ik}
+      =\frac{-\dot V^\theta_{ik}
+              -\alpha I_i((t^\theta_{ik})^-)
+              -\omega_iQ_i((t^\theta_{ik})^-)}{\tau_V}.
+    \label{eq:tes-acceleration}
+\end{equation}
+Under the $Q$-injection in Equation~\eqref{eq:tes-arrival-jump}, $V_i$, $I_i$,
+and $\dot V_i$ remain continuous at an arrival. The acceleration has only a
+finite jump,
+\begin{equation}
+    \ddot V_i^+-\ddot V_i^-
+      =\frac{\omega_iw_{ij}}{\tau_V},
+    \label{eq:tes-acceleration-jump}
+\end{equation}
+so its one-sided values remain finite even when an input arrival coincides
+with a threshold event. In contrast, direct $I$-injection would give
+$\dot V_i^+-\dot V_i^-=w_{ij}/\tau_V$; consequently, $\ddot V_i$ would contain
+the distributional term
+$(w_{ij}/\tau_V)\delta(t-t^s_{jk})$ at the arrival. This is why TeS uses
+quadrature injection when the delay depends on the threshold-crossing slope.
+
+\paragraph{Regularity and scope.}
+The resulting gradients are exact
+where threshold crossings are transverse, the delay map is differentiable,
+and the spike identities remain unchanged in a neighborhood of the evaluated
+weight. As in
+EventProp, the base factor $1/\dot V^\theta_{ik}$ remains singular at a grazing
+crossing; making $\mathfrak d'_{ik}$ small suppresses only the additional
+delay-dependent contribution. The frequency derivation additionally assumes
+zero initial oscillator state and that the synaptic jump amplitude, reset map,
+and delay law have no explicit dependence on $\omega_i$. An explicitly
+frequency-dependent jump normalization would contribute an additional direct
+event term.
+
+The numerical gradient landscapes reported for this checkpoint compare the
+implemented adjoint with centered finite differences only on locally stable
+event topologies.  Agreement is a consistency and debugging result; it does
+not by itself prove the analytical derivation above.

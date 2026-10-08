@@ -1,0 +1,40 @@
+{
+  "artifact_inventory": {
+    "checkpoint_files": 668,
+    "figure_bytes": 66559717,
+    "json_files": 114,
+    "output_bytes": 458550754,
+    "png_files": 324
+  },
+  "code_inventory": {
+    "production_python_lines": 12544,
+    "test_python_lines": 7565
+  },
+  "full_test_baseline": {
+    "failed": 17,
+    "passed": 315,
+    "runtime_seconds": 94.2,
+    "stale_failure_groups": [
+      "landscape diagnostics",
+      "refined landscape",
+      "oscillator-sensitive continuous/discrete timing",
+      "oscillator-sensitive root time",
+      "TTFS landscape"
+    ]
+  },
+  "small_training_baseline": {
+    "artifact_bytes": 607232,
+    "artifact_files": 7,
+    "config": {
+      "epochs": 1,
+      "hidden_bump_amount": 0.1,
+      "loss": "squared_hinge",
+      "margin_ms": 2.0,
+      "test_size": 50,
+      "train_size": 100,
+      "validation_size": 50,
+      "v_dot_clip": 2.0
+    },
+    "runtime_seconds": 12.11
+  }
+}
